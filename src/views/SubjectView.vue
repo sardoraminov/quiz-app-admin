@@ -78,6 +78,8 @@
               Saqlash
             </button>
             <button
+              type="button"
+              @click="deleteQuestion(id, index)"
               class="delete-btn border bg-red text-white px-5 py-3 mb-7 rounded transition-all ease-linear duration-75 hover:-translate-y-1 hover:shadow -lg disabled:bg-gray"
             >
               O'chirish
@@ -111,7 +113,7 @@ export default {
   },
   methods: {
     async getSubject() {
-      const resp = await api.get(`/subjects/get/${this.id}`)
+      const resp = await api.get(`/subjects/get/${this.id}`);
       this.subject = resp.data.subject;
     },
     async updateSubj(id, index) {
@@ -120,6 +122,15 @@ export default {
         index,
       });
       console.log(resp.data);
+      this.toast.success(resp.data.msg, { timeout: 2000 });
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    },
+    async deleteQuestion(id, index) {
+      const resp = await api.put(`/subjects/deleteOneQuestion/${id}`, {
+        question: this.subject.questions[index],
+      });
       this.toast.success(resp.data.msg, { timeout: 2000 });
       setTimeout(() => {
         window.location.reload();
