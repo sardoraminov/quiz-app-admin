@@ -107,9 +107,7 @@ export default {
     let subjects = store.state.subjects
 
     onBeforeMount(() => {
-      store.dispatch('fetchSubjects').then((res) => {
-        console.log(res);
-      })
+      store.dispatch('fetchSubjects')
     })
 
     const changeStatus = (stat) => {
