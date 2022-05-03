@@ -1,6 +1,7 @@
 <template>
   <div class="subject-page xs:px-8 py-6 px-4">
-    <div class="subject-container">
+    <div v-if="loading" class="loading text-center mt-4 text-2xl">Loading...</div>
+    <div v-else class="subject-container">
       <h1 class="subject-name text-3xl font-bold text-blue">
         {{ subject.name }}
       </h1>
@@ -106,15 +107,19 @@ export default {
   data() {
     return {
       subject: {},
+      loading: false,
     };
   },
   mounted() {
     this.getSubject();
   },
+  computed: {},
   methods: {
     async getSubject() {
+      this.loading = true;
       const resp = await api.get(`/subjects/get/${this.id}`);
       this.subject = resp.data.subject;
+      this.loading = false;
     },
     async updateSubj(id, index) {
       const resp = await api.put(`/subjects/update/${id}`, {

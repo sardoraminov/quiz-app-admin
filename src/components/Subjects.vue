@@ -5,7 +5,11 @@
       to="/create"
       ><img :src="PlusIco" alt="icon" class="mr-2" /> Test qo'shish</router-link
     >
-    <div class="subjects-container grid-cols-auto">
+    <div v-if="loading" class="loading text-center mt-4 text-2xl">
+      Loading...
+    </div>
+    <div class="no-subject text-center text-xl mt-4" v-else-if="subjects.length === 0">Hech qanday fan mavjud emas :(</div>
+    <div v-else class="subjects-container grid grid-cols-auto gap-3">
       <div
         v-for="(subject, index) in subjects"
         :key="index"
@@ -17,8 +21,9 @@
           :to="{
             name: 'subject',
             params: { id: subject._id },
-          }"  
-        >{{subject.questions.length}} ta savol</router-link>
+          }"
+          >{{ subject.questions.length }} ta savol</router-link
+        >
       </div>
     </div>
   </div>
@@ -28,10 +33,9 @@
 import EditIco from "@/assets/edit.svg";
 import DeleteIco from "@/assets/delete.svg";
 import PlusIco from "@/assets/plus.svg";
-import { onBeforeMount, onMounted, watch } from "vue";
+import { onBeforeMount, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { reactive } from "vue";
-import { useRouter } from "vue-router";
 export default {
   name: "Subject",
   data() {
@@ -46,12 +50,17 @@ export default {
       return;
     };
 
+    let loading = ref(false);
+
     const store = useStore();
 
     let subjects = reactive(store.state.subjects);
 
     onBeforeMount(() => {
-      store.dispatch("fetchSubjects");
+      loading.value = true;
+      store.dispatch("fetchSubjects").then(() => {
+        loading.value = false;
+      });
     });
 
     watch(
@@ -64,7 +73,7 @@ export default {
       }
     );
 
-    return { changeStatus, subjects };
+    return { changeStatus, subjects, loading };
   },
 };
 </script>

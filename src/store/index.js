@@ -6,7 +6,6 @@ export default createStore({
     subjects: [],
     exams: [],
     pupils: [],
-    loading: false,
     createdSubject: {},
     error: false,
   },
@@ -14,7 +13,6 @@ export default createStore({
     getSubjects: (state) => state.subjects,
     getExams: (state) => state.exams,
     getPupils: (state) => state.pupils,
-    getLoading: (state) => state.loading,
     getCreatedSubject: (state) => state.createdSubject,
     getError: (state) => state.error,
   },
@@ -28,9 +26,6 @@ export default createStore({
     setPupils(state, payload) {
       state.pupils = payload;
     },
-    setLoading(state, payload) {
-      state.loading = payload;
-    },
     setCreatedSubject(state, payload) {
       state.createdSubject = payload;
     },
@@ -40,18 +35,14 @@ export default createStore({
   },
   actions: {
     async fetchSubjects({ commit }) {
-      commit("setLoading", true);
       try {
         const resp = await api.get("/subjects");
         commit("setSubjects", resp.data);
-        commit("setLoading", false);
       } catch (error) {
-        commit("setLoading", false);
         console.log(error);
       }
     },
     async createSubject({ commit }, payload) {
-      commit("setLoading", true);
       try {
         const resp = await api.post(
           "/subjects/create",
@@ -77,10 +68,8 @@ export default createStore({
         }
         console.log(resp.data);
         commit("setCreatedSubject", resp.data);
-        commit("setLoading", false);
         console.log(this.state.createdSubject);
       } catch (error) {
-        commit("setLoading", false);
         console.log(error);
       }
     },
