@@ -8,21 +8,37 @@
     <div v-if="loading" class="loading text-center mt-4 text-2xl">
       Loading...
     </div>
-    <div class="no-subject text-center text-xl mt-4" v-else-if="subjects.length === 0">Hech qanday fan mavjud emas :(</div>
+    <div
+      class="no-subject text-center text-xl mt-4"
+      v-else-if="subjects.length === 0"
+    >
+      Hech qanday fan mavjud emas :(
+    </div>
     <div v-else class="subjects-container grid grid-cols-auto gap-3">
       <div
         v-for="(subject, index) in subjects"
         :key="index"
-        class="subject border rounded p-5"
+        class="subject border rounded p-5 flex flex-col items-start"
       >
         <h1 class="name text-2xl font-bold">{{ subject.name }}</h1>
-        <p class="class text-lg mt-2">{{ subject.classNum }} - sinf</p>
+        <p class="class text-lg opacity-80">
+          {{ subject.classNum }} - sinf
+        </p>
+        <p
+          :class="[
+            'status, text-white px-2 rounded text-xs',
+            subject.active ? 'bg-blue' : 'bg-red',
+          ]"
+        >
+          {{ subject.active ? "Faol" : "O'chirilgan" }}
+        </p>
         <router-link
           :to="{
             name: 'subject',
             params: { id: subject._id },
           }"
-          >{{ subject.questions.length }} ta savol</router-link
+          class="text-blue underline mt-4"
+          >Savolarni ko'rish (<b>{{ subject.questions.length }}</b>)</router-link
         >
       </div>
     </div>
@@ -36,6 +52,7 @@ import PlusIco from "@/assets/plus.svg";
 import { onBeforeMount, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { reactive } from "vue";
+
 export default {
   name: "Subject",
   data() {
@@ -46,10 +63,6 @@ export default {
     };
   },
   setup() {
-    const changeStatus = (id) => {
-      return;
-    };
-
     let loading = ref(false);
 
     const store = useStore();
@@ -73,7 +86,7 @@ export default {
       }
     );
 
-    return { changeStatus, subjects, loading };
+    return { subjects, loading };
   },
 };
 </script>

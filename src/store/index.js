@@ -73,6 +73,7 @@ export default createStore({
         console.log(error);
       }
     },
+    
   },
   modules: {},
 });

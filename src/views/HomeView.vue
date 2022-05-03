@@ -24,7 +24,7 @@
                 : 'text-[#BDBDBD] bg-[#EFEFEF]',
             ]"
           >
-            8
+            {{subjects.length}}
           </div>
         </button>
         <button
@@ -85,7 +85,8 @@ import Pupils from "@/components/Pupils.vue";
 import Subjects from "@/components/Subjects.vue";
 import Exams from "@/components/Exams.vue";
 import PlusIco from "@/assets/plus.svg";
-import { ref } from "vue";
+import { onBeforeMount, ref } from "vue";
+import {useStore} from "vuex"
 
 export default {
   name: "HomeView",
@@ -100,7 +101,16 @@ export default {
     };
   },
   setup() {
+    const store = useStore()
     const current = ref("subjects");
+
+    let subjects = store.state.subjects
+
+    onBeforeMount(() => {
+      store.dispatch('fetchSubjects').then((res) => {
+        console.log(res);
+      })
+    })
 
     const changeStatus = (stat) => {
       current.value = stat;
@@ -119,6 +129,7 @@ export default {
       current,
       closeExam,
       deleteExam,
+      subjects
     };
   },
 };

@@ -1,5 +1,15 @@
 <template>
   <div class="subject-page xs:px-8 py-6 px-4">
+    <nav
+      class="top_navigation flex flex-row items-center justify-between mb-10"
+    >
+      <button
+        @click="goBack()"
+        class="go-back transition-all flex items-center justify-center text-white text-2xl ease-linear duration-75 hover:-translate-y-1 hover:shadow-lg font-bold bg-blue rounded px-3 py-2"
+      >
+        <ion-icon name="chevron-back-outline" class="m-1"></ion-icon>
+      </button>
+    </nav>
     <div v-if="loading" class="loading text-center mt-4 text-2xl">Loading...</div>
     <div v-else class="subject-container">
       <h1 class="subject-name text-3xl font-bold text-blue">
@@ -74,7 +84,7 @@
             <button
               type="button"
               @click="updateSubj(id, index)"
-              class="update-btn border bg-blue text-white px-5 py-3 mb-7 rounded transition-all ease-linear duration-75 hover:-translate-y-1 hover:shadow -lg disabled:bg-gray mr-2"
+              class="update-btn border bg-blue text-white px-5 py-3 mb-7 rounded transition-all ease-linear duration-75 hover:-translate-y-1 hover:shadow-lg disabled:bg-gray mr-2"
             >
               Saqlash
             </button>
@@ -140,6 +150,9 @@ export default {
       setTimeout(() => {
         window.location.reload();
       }, 2000);
+    },
+    goBack() {
+      this.$router.go(-1);
     },
   },
 };
