@@ -5,38 +5,26 @@
       to="/create"
       ><img :src="PlusIco" alt="icon" class="mr-2" /> Test qo'shish</router-link
     >
-    <div class="sorting my-6">
-      <select
-        v-model="sortingByClass"
-        class="sorting-class border rounded px-4 py-2 outline-none"
-      >
-        <option selected disabled>Sinflar</option>
-        <option value="5">5-sinf</option>
-        <option value="6">6-sinf</option>
-        <option value="7">7-sinf</option>
-        <option value="8">8-sinf</option>
-        <option value="9">9-sinf</option>
-        <option value="10">11-sinf</option>
-      </select>
-      <select v-model="sortingByName" class="sorting-names border rounded px-4 py-2 outline-none">
-        <option disabled selected>Fanlar</option>
-        <option v-for="(name, index) in subjectNames" :key="index">
-          {{ name }}
-        </option>
-      </select>
+    <div class="searching mt-8 mb-2">
+      <input
+        v-model="searchTerm"
+        type="text"
+        class="input-text border-2 outline-none w-full rounded p-3 mb-3 px-3 py-2 focus:border-blue transition-all"
+        placeholder="Fan nomi yoki sinfi bo'yicha qidirish"
+      />
     </div>
     <div v-if="loading" class="loading text-center mt-4 text-2xl">
       Loading...
     </div>
     <div
       class="no-subject text-center text-xl mt-4"
-      v-else-if="subjects.length === 0"
+      v-else-if="filteredSubjects.length === 0"
     >
       Hech qanday fan mavjud emas :(
     </div>
     <div v-else class="subjects-container grid grid-cols-auto gap-3">
       <div
-        v-for="(subject, index) in subjects"
+        v-for="(subject, index) in filteredSubjects"
         :key="index"
         class="subject border rounded p-5 flex flex-col items-start"
       >
@@ -68,7 +56,7 @@
 import EditIco from "@/assets/edit.svg";
 import DeleteIco from "@/assets/delete.svg";
 import PlusIco from "@/assets/plus.svg";
-import { onBeforeMount, ref, watch } from "vue";
+import { computed, onBeforeMount, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { reactive } from "vue";
 
@@ -84,24 +72,43 @@ export default {
   setup() {
     let loading = ref(false);
 
-    const sortingByClass = ref("Sinflar");
-    const sortingByName = ref("Fanlar");
-
     const store = useStore();
 
-    let subjects = reactive(store.state.subjects);
+    let searchTerm = ref("");
 
-    let subjectNames = new Set();
+    let subjects = reactive(store.state.subjects);
 
     onBeforeMount(() => {
       loading.value = true;
       store.dispatch("fetchSubjects").then(() => {
         loading.value = false;
-        subjects.forEach((subj) => subjectNames.add(subj.name));
       });
     });
 
-    console.log(subjectNames);
+    watch(
+      () => searchTerm.value,
+      (newValue) => {
+        searchTerm.value = newValue;
+      },
+      { immediate: true }
+    );
+
+    const filteredSubjects = computed(() => {
+      if (!searchTerm.value) {
+        return subjects;
+      } else {
+        return subjects.filter((subject) => {
+          return (
+            subject.name
+              .toLowerCase()
+              .includes(searchTerm.value.toLowerCase()) ||
+            subject.classNum
+              .toLowerCase()
+              .includes(searchTerm.value.toLowerCase())
+          );
+        });
+      }
+    });
 
     watch(
       () => store.state.subjects,
@@ -113,31 +120,7 @@ export default {
       }
     );
 
-      
-    watch(
-      () => [sortingByName.value, sortingByClass.value],
-      () => {
-        subjects.splice(0, subjects.length);
-        store.state.subjects.forEach((subject) => {
-          if (subject.classNum === sortingByClass.value && sortingByName.value === subject.name) {
-            subjects.push(subject);
-          }
-        });
-      }
-    );
-
-    watch(
-      () => [sortingByName.value, sortingByClass.value],
-      () => {
-        subjects.splice(0, subjects.length);
-        store.state.subjects.forEach((subject) => {
-          if (subject.name === sortingByName.value && sortingByClass.value === subject.classNum) {
-            subjects.push(subject);
-          }
-        });
-      }
-    );
-    return { subjects, loading, sortingByClass, subjectNames, sortingByName };
+    return { subjects, loading, searchTerm, filteredSubjects };
   },
 };
 </script>
