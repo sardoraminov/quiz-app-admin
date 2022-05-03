@@ -113,12 +113,13 @@ export default {
       }
     );
 
+      
     watch(
-      () => sortingByClass.value,
+      () => [sortingByName.value, sortingByClass.value],
       () => {
         subjects.splice(0, subjects.length);
         store.state.subjects.forEach((subject) => {
-          if (subject.classNum === sortingByClass.value) {
+          if (subject.classNum === sortingByClass.value && sortingByName.value === subject.name) {
             subjects.push(subject);
           }
         });
@@ -126,17 +127,16 @@ export default {
     );
 
     watch(
-      () => sortingByName.value,
+      () => [sortingByName.value, sortingByClass.value],
       () => {
         subjects.splice(0, subjects.length);
         store.state.subjects.forEach((subject) => {
-          if (subject.name === sortingByName.value) {
+          if (subject.name === sortingByName.value && sortingByClass.value === subject.classNum) {
             subjects.push(subject);
           }
         });
       }
     );
-
     return { subjects, loading, sortingByClass, subjectNames, sortingByName };
   },
 };
