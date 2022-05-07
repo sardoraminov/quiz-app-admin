@@ -1,6 +1,10 @@
 <template>
   <div class="pupils">
-    <CreateUser :closeModal="closeModal" :show="showModal" />
+    <CreateUser
+      :getPupils="getPupils"
+      :closeModal="closeModal"
+      :show="showModal"
+    />
     <button
       @click="openModal"
       class="openmodal-btn flex flex-row items-center w-full mb-3 transition-all ease-linear duration-75 hover:-translate-y-1 hover:shadow-lg bg-blue text-white rounded font-semibold px-3 py-2"
@@ -22,17 +26,22 @@
     >
       O'quvchilar topilmadi :(
     </div>
-    <div
-      v-else
-      v-for="(pupil, index) in filteredList"
-      :key="index"
-      class="pupil"
-    >
-      <h1>{{ pupil.name }}</h1>
+    <div v-else class="pupils-container grid grid-cols-auto gap-3">
+      <div v-for="(pupil, index) in filteredList" :key="index" class="pupil border flex flex-col items-start">
+        <div class="user-profile flex flex-row items-center justify-between">
+          <div class="profile-img mr-4">
+            <img :src="pupil.profilPic" alt="" class="w-12" />
+          </div>
+          <div class="profile-names">
+            <h1 class="fullname text-2xl font-bold">{{ pupil.fullname }}</h1>
+            <p class="id">{{ pupil.oneId }}</p>
+          </div>
+        </div>
+      </div>
     </div>
     <button
-      v-if="filteredSubjects"
-      class="delete-btn bg-red my-4 text-white font-semibold rounded px-3 py-2 mt-6"
+      v-if="filteredList.length > 0"
+      class="delete-btn bg-red my-4 text-white font-semibold rounded px-3 py-2 mt-6 transition-all ease-linear duration-75 hover:-translate-y-1 hover:shadow-lg"
     >
       Tugatganlarni o'chirish
     </button>
@@ -55,7 +64,7 @@ export default {
       showModal: false,
       PlusIco,
       loading: false,
-      pupils: [],
+      pupilsArr: [],
     };
   },
   methods: {
@@ -64,6 +73,7 @@ export default {
     },
     closeModal() {
       this.showModal = false;
+      this.getPupils();
     },
     openModal() {
       this.showModal = true;
@@ -73,16 +83,20 @@ export default {
         this.loading = true;
         const resp = await api.get("/users");
         const data = await resp.data;
-        this.pupils = data;
+        this.pupilsArr = data;
         this.loading = false;
+        console.log(data);
       } catch (error) {
         console.log(error);
       }
     },
   },
+  beforeMount() {
+    this.getPupils();
+  },
   computed: {
     filteredList() {
-      return this.pupils.filter((pupil) => {
+      return this.pupilsArr.filter((pupil) => {
         return pupil.fullname
           .toLowerCase()
           .includes(this.searchTerm.toLowerCase());

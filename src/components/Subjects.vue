@@ -1,11 +1,11 @@
 <template>
   <div class="subjects">
     <router-link
-      class="flex flex-row items-center w-auto mb-6 transition-all ease-linear duration-75 hover:-translate-y-1 hover:shadow-lg bg-blue text-white rounded font-semibold px-3 py-2"
+      class="flex flex-row items-center w-auto mb-3 transition-all ease-linear duration-75 hover:-translate-y-1 hover:shadow-lg bg-blue text-white rounded font-semibold px-3 py-2"
       to="/create"
       ><img :src="PlusIco" alt="icon" class="mr-2" /> Test qo'shish</router-link
     >
-    <div class="searching mt-8 mb-2">
+    <div class="searching mb-2">
       <input
         v-model="searchTerm"
         type="text"

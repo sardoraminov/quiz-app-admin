@@ -16,16 +16,6 @@
           ]"
         >
           Testlar
-          <div
-            :class="[
-              'length  px-2 ml-3 rounded',
-              current === 'subjects'
-                ? 'text-blue bg-[#DFF5FC]'
-                : 'text-[#BDBDBD] bg-[#EFEFEF]',
-            ]"
-          >
-            {{ subjects.length }}
-          </div>
         </button>
         <button
           @click="changeStatus('pupils')"
@@ -37,16 +27,6 @@
           ]"
         >
           O'quvchilar
-          <div
-            :class="[
-              'length px-2 ml-3 rounded',
-              current === 'pupils'
-                ? 'text-blue bg-[#DFF5FC]'
-                : 'text-[#BDBDBD] bg-[#EFEFEF]',
-            ]"
-          >
-            {{pupils.length}}
-          </div>
         </button>
         <button
           @click="changeStatus('exams')"
@@ -58,16 +38,6 @@
           ]"
         >
           Imtihonlar
-          <div
-            :class="[
-              'length px-2 ml-3 rounded',
-              current === 'exams'
-                ? 'text-blue bg-[#DFF5FC]'
-                : 'text-[#BDBDBD] bg-[#EFEFEF]',
-            ]"
-          >
-            12
-          </div>
         </button>
       </div>
       <!--  -->
@@ -85,9 +55,7 @@ import Pupils from "@/components/Pupils.vue";
 import Subjects from "@/components/Subjects.vue";
 import Exams from "@/components/Exams.vue";
 import PlusIco from "@/assets/plus.svg";
-import { onBeforeMount, reactive, ref } from "vue";
-import { useStore } from "vuex";
-import { api } from "@/plugins/api";
+import { ref } from "vue";
 
 export default {
   name: "HomeView",
@@ -96,51 +64,21 @@ export default {
     Pupils,
     Exams,
   },
-  data() {
+  data() {  
     return {
       PlusIco,
     };
   },
   setup() {
-    const store = useStore();
-    const current = ref("subjects");
-
-    let subjects = store.state.subjects;
-    let pupils = reactive([]);
-
-    const fetchPupils = async () => {
-      const resp = await api.get("/users");
-      const data = await resp.data;
-
-      pupils = data;
-    };
-
-    onBeforeMount(() => {
-      store.dispatch("fetchSubjects");
-      fetchPupils().then(() => {
-        console.log(pupils);
-      });
-    });
+    const current = ref("pupils");
 
     const changeStatus = (stat) => {
       current.value = stat;
     };
 
-    const closeExam = (exId) => {
-      return;
-    };
-
-    const deleteExam = (exId) => {
-      return;
-    };
-
     return {
       changeStatus,
       current,
-      closeExam,
-      deleteExam,
-      subjects,
-      pupils
     };
   },
 };

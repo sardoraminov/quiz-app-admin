@@ -25,14 +25,14 @@
             type="text"
             class="border w-full outline-none py-2 px-3 focus:border-blue transition-all"
             placeholder="Ismi va familiyasi"
-            v-model="fullname"
+            v-model="user.fullname"
           />
           <div class="id flex flex-col items-start w-full">
             <input
               type="text"
               class="border w-full outline-none py-2 px-3 focus:border-blue transition-all"
               placeholder="O'quvchi ID si"
-              v-model="id"
+              v-model="user.oneId"
             />
             <button
               @click="generateID()"
@@ -45,8 +45,10 @@
             type="text"
             placeholder="Sinfi (Faqat raqam kiritilsin)"
             class="border w-full outline-none py-2 px-3 focus:border-blue transition-all"
+            v-model="user.classNum"
           />
           <button
+            @click="createUser()"
             class="create-btn border bg-blue text-white px-5 py-3 rounded w-full transition-all ease-linear duration-75 hover:-translate-y-1 hover:shadow-lg"
           >
             YUBORISH
@@ -58,26 +60,62 @@
 </template>
 
 <script>
+import { api } from "@/plugins/api";
+import { useToast } from "vue-toastification";
+import { useRouter } from "vue-router";
+import { reactive } from "vue";
+
 export default {
   name: "CreateUser",
-  props: ["show", "closeModal"],
-  data() {
-    return {
+  props: ["show", "closeModal", "getPupils"],
+  setup(props) {
+    const toast = useToast();
+    const router = useRouter();
+    const user = reactive({
       fullname: "",
-      class: 0,
-      id: "",
-    };
-  },
-  methods: {
-    generateID() {
+      classNum: "",
+      oneId: "",
+    });
+    const generateID = () => {
       let date = new Date();
-      let id =
+      let oneId =
         Math.random().toString(12).substring(2, 8) +
         date.getDate() +
         date.getMonth();
 
-      this.id = id;
-    },
+      user.oneId = oneId;
+    };
+
+    const createUser = async () => {
+      if (user.fullname.length < 5) {
+        toast.warning(
+          "O'quvchi ism familiyasini kamida 5 ta belgidan iborat bo'lishi kerak!",
+          { timeout: 4000 }
+        );
+      } else if (!user.classNum) {
+        toast.warning("O'quvchi sinfini kiriting!", { timeout: 4000 });
+      } else if (!user.oneId) {
+        toast.warning("O'quvchi uchun ID yarating!", { timeout: 4000 });
+      } else {
+        try {
+          const resp = await api.post("/users/create", {
+            fullname: user.fullname,
+            oneId: user.oneId,
+            classNum: user.classNum,
+          });
+          const data = await resp.data;
+
+          console.log(data);
+          toast.success(`${user.fullname} tizimdan ro'yxatdan o'tdi!`, {
+            timeout: 4000,
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+
+    return { user, generateID, createUser };
   },
 };
 </script>

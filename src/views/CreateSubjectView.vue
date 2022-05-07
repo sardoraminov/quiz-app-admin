@@ -12,12 +12,17 @@
       <h2 class="title text-xl font-bold">Test qo'shish</h2>
     </nav>
     <form @submit.prevent="createSubject()">
-      <p class="reminder opacity-70 mb-2">
-        Fan nomi va savollar sonini kiritganingizdan keyin pastda avtomatik
-        tarzda savollarni qo'shish uchun forma yaratiladi. Agar fan nomini yoki
-        savollar sonini kiritishda xatolik ketsa, sahifani yangilab qaytaldan
-        yozishingiz mumkin.
-      </p>
+      <div
+        class="reminder border-l-4 rounded px-4 py-5 border-blue bg-blue-50 text-blue mb-4"
+      >
+        <b>NOTE</b>
+        <p class="pr-6 text-lg mt-5">
+          Fan nomi va savollar sonini kiritganingizdan keyin pastda avtomatik
+          tarzda savollarni qo'shish uchun forma yaratiladi. Agar fan nomini
+          yoki savollar sonini kiritishda xatolik ketsa, sahifani yangilab
+          qaytaldan yozishingiz mumkin.
+        </p>
+      </div>
       <div class="input-group">
         <input
           type="text"
@@ -37,10 +42,9 @@
       <div class="input-group">
         <input
           type="number"
-          min="0"
           class="input-number border-2 outline-none w-full rounded p-3 mb-6 px-3 py-2 focus:border-blue transition-all"
-          placeholder="Savollar soni"
           v-model="subject.questionsNum"
+          placeholder="Savollar soni"
         />
       </div>
       <button
@@ -161,8 +165,16 @@ export default {
     };
 
     const createSubject = () => {
-      if (!subject.name || !subject.classNum || !subject.questionsNum) {
-        toast.warning("Iltimos, barcha qatorlarni to'ldiring!", {
+      if (!subject.name) {
+        toast.warning("Iltimos, fan nomini kiriting!", {
+          timeout: 3000,
+        });
+      } else if (!subject.classNum) {
+        toast.warning("Iltimos, sinfni kiriting!", {
+          timeout: 3000,
+        });
+      } else if (!subject.questionsNum || subject.questionsNum < 1) {
+        toast.warning("Savollar soni 0 dan kichik bo'lmasligi kerak!", {
           timeout: 3000,
         });
       } else {
@@ -195,9 +207,12 @@ export default {
           questions: subject.questions,
         })
         .then(() => {
-          toast.success("Savollar to'plami yaratildi!", {
-            timeout: 2000,
-          });
+          toast.success(
+            `${subject.classNum} - sinf ${subject.name} fani to'plami qo'shildi!`,
+            {
+              timeout: 2000,
+            }
+          );
           isDisabledSecondBtn.value = true;
           router.push("/");
         });
