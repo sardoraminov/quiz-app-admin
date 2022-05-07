@@ -53,7 +53,7 @@
           <router-link to="#!" v-if="pupil.active" class="bg-blue-10 text-blue font-bold uppercase rounded px-1">{{pupil.exam}} imtihonida</router-link>
           <p class="bg-gray-10 text-gray-400 uppercase px-1 font-bold rounded" v-else>Imtihonda emas</p>
         </div>
-        <button class="delete-btn bg-red p-2 rounded absolute right-3 top-3">
+        <button class="user-delete-btn bg-red p-2 rounded absolute right-3 top-3">
           <img :src="DeleteIco" alt="delete-icon">
         </button>
       </div>
