@@ -26,17 +26,36 @@
     >
       O'quvchilar topilmadi :(
     </div>
-    <div v-else class="pupils-container grid grid-cols-auto gap-3">
-      <div v-for="(pupil, index) in filteredList" :key="index" class="pupil border flex flex-col items-start">
+    <div v-else class="pupils-container grid grid-cols-auto gap-3 ">
+      <div
+        v-for="(pupil, index) in filteredList"
+        :key="index"
+        class="pupil border flex flex-col items-start p-3 relative"
+      >
         <div class="user-profile flex flex-row items-center justify-between">
           <div class="profile-img mr-4">
             <img :src="pupil.profilPic" alt="" class="w-12" />
           </div>
           <div class="profile-names">
-            <h1 class="fullname text-2xl font-bold">{{ pupil.fullname }}</h1>
-            <p class="id">{{ pupil.oneId }}</p>
+            <router-link
+              to="#/"
+              class="fullname text-xl font-bold text-blue hover:underline"
+            >
+              {{ pupil.fullname }}
+            </router-link>
+            <p class="id text-sm text-opacity-75">
+              {{ pupil.oneId }}
+            </p>
           </div>
         </div>
+        <div class="user-info mt-5">
+          <p>{{pupil.class}} - sinf</p>
+          <router-link to="#!" v-if="pupil.active" class="bg-blue-10 text-blue font-bold uppercase rounded px-1">{{pupil.exam}} imtihonida</router-link>
+          <p class="bg-gray-10 text-gray-400 uppercase px-1 font-bold rounded" v-else>Imtihonda emas</p>
+        </div>
+        <button class="delete-btn bg-red p-2 rounded absolute right-3 top-3">
+          <img :src="DeleteIco" alt="delete-icon">
+        </button>
       </div>
     </div>
     <button
@@ -51,6 +70,8 @@
 <script>
 import CreateUser from "./CreateUser.vue";
 import PlusIco from "@/assets/plus.svg";
+import DeleteIco from "@/assets/delete.svg";
+import CopyIco from "@/assets/copy.svg";
 import { api } from "@/plugins/api";
 export default {
   components: { CreateUser },
@@ -62,9 +83,11 @@ export default {
     return {
       searchTerm: "",
       showModal: false,
-      PlusIco,
       loading: false,
       pupilsArr: [],
+      PlusIco,
+      CopyIco,
+      DeleteIco
     };
   },
   methods: {
