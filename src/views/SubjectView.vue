@@ -10,7 +10,9 @@
         <ion-icon name="chevron-back-outline" class="m-1"></ion-icon>
       </button>
     </nav>
-    <div v-if="loading" class="loading text-center mt-4 text-2xl">Loading...</div>
+    <div v-if="loading" class="loading text-center mt-4 text-2xl">
+      Loading...
+    </div>
     <div v-else class="subject-container">
       <h1 class="subject-name text-3xl font-bold text-blue">
         {{ subject.name }}
@@ -138,18 +140,14 @@ export default {
       });
       console.log(resp.data);
       this.toast.success(resp.data.msg, { timeout: 2000 });
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
+      this.getSubject();
     },
     async deleteQuestion(id, index) {
       const resp = await api.put(`/subjects/deleteOneQuestion/${id}`, {
         question: this.subject.questions[index],
       });
       this.toast.success(resp.data.msg, { timeout: 2000 });
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
+      this.getSubject();
     },
     goBack() {
       this.$router.go(-1);
