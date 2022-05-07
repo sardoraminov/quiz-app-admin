@@ -24,7 +24,7 @@
                 : 'text-[#BDBDBD] bg-[#EFEFEF]',
             ]"
           >
-            {{subjects.length}}
+            {{ subjects.length }}
           </div>
         </button>
         <button
@@ -45,7 +45,7 @@
                 : 'text-[#BDBDBD] bg-[#EFEFEF]',
             ]"
           >
-            9
+            {{pupils.length}}
           </div>
         </button>
         <button
@@ -85,8 +85,9 @@ import Pupils from "@/components/Pupils.vue";
 import Subjects from "@/components/Subjects.vue";
 import Exams from "@/components/Exams.vue";
 import PlusIco from "@/assets/plus.svg";
-import { onBeforeMount, ref } from "vue";
-import {useStore} from "vuex"
+import { onBeforeMount, reactive, ref } from "vue";
+import { useStore } from "vuex";
+import { api } from "@/plugins/api";
 
 export default {
   name: "HomeView",
@@ -101,14 +102,25 @@ export default {
     };
   },
   setup() {
-    const store = useStore()
+    const store = useStore();
     const current = ref("subjects");
 
-    let subjects = store.state.subjects
+    let subjects = store.state.subjects;
+    let pupils = reactive([]);
+
+    const fetchPupils = async () => {
+      const resp = await api.get("/users");
+      const data = await resp.data;
+
+      pupils = data;
+    };
 
     onBeforeMount(() => {
-      store.dispatch('fetchSubjects')
-    })
+      store.dispatch("fetchSubjects");
+      fetchPupils().then(() => {
+        console.log(pupils);
+      });
+    });
 
     const changeStatus = (stat) => {
       current.value = stat;
@@ -127,7 +139,8 @@ export default {
       current,
       closeExam,
       deleteExam,
-      subjects
+      subjects,
+      pupils
     };
   },
 };

@@ -9,6 +9,13 @@
       >
         <ion-icon name="chevron-back-outline" class="m-1"></ion-icon>
       </button>
+      <button
+        @click="deleteSubject(subject._id)"
+        type="button"
+        class="delete-all border bg-red text-white px-5 py-3 rounded transition-all ease-linear duration-75 hover:-translate-y-1 hover:shadow -lg disabled:bg-gray"
+      >
+        <img :src="DeleteIco" alt="delete" />
+      </button>
     </nav>
     <div v-if="loading" class="loading text-center mt-4 text-2xl">
       Loading...
@@ -24,7 +31,7 @@
         <div
           v-for="(question, index) in subject.questions"
           :key="index"
-          class="question-form border border-blue p-4 pb-0 mb-10"
+          class="question-form border border-blue p-4 pb-0 mb-6"
         >
           <p class="number mb-2">{{ index + 1 }}-savol</p>
           <div class="input-group mb-4">
@@ -88,27 +95,37 @@
               @click="updateSubj(id, index)"
               class="update-btn border bg-blue text-white px-5 py-3 mb-7 rounded transition-all ease-linear duration-75 hover:-translate-y-1 hover:shadow-lg disabled:bg-gray mr-2"
             >
-              Saqlash
+              <img :src="EditIco" alt="edit" />
             </button>
             <button
               type="button"
               @click="deleteQuestion(id, index)"
               class="delete-btn border bg-red text-white px-5 py-3 mb-7 rounded transition-all ease-linear duration-75 hover:-translate-y-1 hover:shadow -lg disabled:bg-gray"
             >
-              O'chirish
+              <img :src="DeleteIco" alt="delete" />
             </button>
           </div>
         </div>
+        <button
+          @click="addQuestion()"
+          class="add-question w-full font-bold mb-7 py-2 text-black bg-gray-300 rounded flex items-center justify-center transition-all ease-linear duration-75 hover:-translate-y-1 hover:shadow -lg disabled:bg-gray"
+          type="button"
+        >
+          <!-- <img :src="PlusIco" alt="plus-ico" class="w-6">
+           -->
+          SAVOL QO'SHISH
+        </button>
       </form>
     </div>
   </div>
 </template>
 
 <script>
-import { useStore } from "vuex";
-import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import { api } from "@/plugins/api";
+import PlusIco from "@/assets/plus.svg";
+import DeleteIco from "@/assets/delete.svg";
+import EditIco from "@/assets/edit.svg";
 export default {
   name: "Subject",
   props: ["id"],
@@ -120,6 +137,9 @@ export default {
     return {
       subject: {},
       loading: false,
+      PlusIco,
+      DeleteIco,
+      EditIco,
     };
   },
   mounted() {
@@ -139,15 +159,32 @@ export default {
         index,
       });
       console.log(resp.data);
-      this.toast.success(resp.data.msg, { timeout: 2000 });
+      this.toast.success(resp.data.msg, { timeout: 4000 });
       this.getSubject();
     },
     async deleteQuestion(id, index) {
       const resp = await api.put(`/subjects/deleteOneQuestion/${id}`, {
         question: this.subject.questions[index],
       });
-      this.toast.success(resp.data.msg, { timeout: 2000 });
+      this.toast.success(resp.data.msg, { timeout: 4000 });
       this.getSubject();
+    },
+    async deleteSubject(id) {
+      const resp = await api.delete(`/subjects/delete/${id}`);
+      const data = await resp.data;
+      console.log(data);
+      this.toast.success(data.msg, { timeout: 4000 });
+      this.$router.push("/");
+    },
+    addQuestion() {
+      this.subject.questions.push({
+        question: "",
+        optionA: "",
+        optionB: "",
+        optionC: "",
+        optionD: "",
+        answer: "",
+      });
     },
     goBack() {
       this.$router.go(-1);
