@@ -10,6 +10,8 @@
         <ion-icon name="chevron-back-outline" class="m-1"></ion-icon>
       </button>
       <button
+      v-if="!error"
+        :disabled="disableBtn"
         @click="deleteSubject(subject._id)"
         type="button"
         class="delete-all border bg-red text-white px-5 py-3 rounded transition-all ease-linear duration-75 hover:-translate-y-1 hover:shadow -lg disabled:bg-gray"
@@ -17,8 +19,11 @@
         <img :src="DeleteIco" alt="delete" />
       </button>
     </nav>
-    <div v-if="loading" class="loading text-center mt-4 text-2xl">
+    <div v-if="loading === true" class="loading text-center mt-4 text-2xl">
       Loading...
+    </div>
+    <div v-else-if="error" class="text-center">Ma'lumot topilmadi :( <br>
+      <router-link to="/" class="text-xl text-blue mt-2">Bosh sahifa</router-link>
     </div>
     <div v-else class="subject-container">
       <h1 class="subject-name text-3xl font-bold text-blue">
@@ -91,29 +96,29 @@
           </div>
           <div class="btns pt-2">
             <button
-              type="button"
-              @click="updateSubj(id, index)"
-              class="update-btn border bg-blue text-white px-5 py-3 mb-7 rounded transition-all ease-linear duration-75 hover:-translate-y-1 hover:shadow-lg disabled:bg-gray mr-2"
-            >
-              <img :src="EditIco" alt="edit" />
-            </button>
-            <button
+              :disabled="disableBtn"
               type="button"
               @click="deleteQuestion(id, index)"
               class="delete-btn border bg-red text-white px-5 py-3 mb-7 rounded transition-all ease-linear duration-75 hover:-translate-y-1 hover:shadow -lg disabled:bg-gray"
             >
-              <img :src="DeleteIco" alt="delete" />
+              Savolni o'chirish
             </button>
           </div>
         </div>
         <button
           @click="addQuestion()"
-          class="add-question w-full font-bold mb-7 py-2 text-black bg-gray-300 rounded flex items-center justify-center transition-all ease-linear duration-75 hover:-translate-y-1 hover:shadow -lg disabled:bg-gray"
+          class="add-question w-full font-bold mb-3 py-2 text-black bg-gray-300 rounded flex items-center justify-center transition-all ease-linear duration-75 hover:-translate-y-1 hover:shadow -lg disabled:bg-gray"
           type="button"
         >
-          <!-- <img :src="PlusIco" alt="plus-ico" class="w-6">
-           -->
           SAVOL QO'SHISH
+        </button>
+        <button
+          :disabled="disableBtn"
+          @click="updateWholeSubject(subject._id)"
+          class="save-changes w-full font-bold mb-7 py-4 text-white bg-blue rounded flex items-center justify-center transition-all ease-linear duration-75 hover:-translate-y-1 hover:shadow -lg disabled:bg-gray"
+          type="button"
+        >
+          SAQLASH
         </button>
       </form>
     </div>
@@ -129,14 +134,17 @@ import EditIco from "@/assets/edit.svg";
 export default {
   name: "Subject",
   props: ["id"],
-  setup() {
+  setup(props) {
     const toast = useToast();
+
     return { toast };
   },
   data() {
     return {
       subject: {},
       loading: false,
+      error: false,
+      disableBtn: false,
       PlusIco,
       DeleteIco,
       EditIco,
@@ -150,31 +158,53 @@ export default {
     async getSubject() {
       this.loading = true;
       const resp = await api.get(`/subjects/get/${this.id}`);
-      this.subject = resp.data.subject;
-      this.loading = false;
-    },
-    async updateSubj(id, index) {
-      const resp = await api.put(`/subjects/update/${id}`, {
-        question: this.subject.questions[index],
-        index,
-      });
       console.log(resp.data);
-      this.toast.success(resp.data.msg, { timeout: 4000 });
-      this.getSubject();
+      if (resp.data.status === "error") {
+        this.error = true;
+        this.loading = false;
+        this.toast(resp.data.message, {
+          type: "error",
+          timeout: 8000,
+          closeOnClick: true,
+          icon: true,
+        });
+      } else {
+        this.subject = resp.data.subject;
+        this.loading = false;
+      }
     },
     async deleteQuestion(id, index) {
+      this.disableBtn = true;
       const resp = await api.put(`/subjects/deleteOneQuestion/${id}`, {
         question: this.subject.questions[index],
       });
       this.toast.success(resp.data.msg, { timeout: 4000 });
       this.getSubject();
+      this.disableBtn = false;
     },
     async deleteSubject(id) {
+      this.disableBtn = true;
+
       const resp = await api.delete(`/subjects/delete/${id}`);
       const data = await resp.data;
       console.log(data);
       this.toast.success(data.msg, { timeout: 4000 });
       this.$router.push("/");
+      this.disableBtn = false;
+    },
+    async updateWholeSubject(id) {
+      this.disableBtn = true;
+      const resp = await api.put(`/subjects/updateAll/${id}`, {
+        subject: this.subject,
+      });
+
+      console.log(this.subject);
+      const data = await resp.data;
+      this.toast.success(data.msg, { timeout: 4000 });
+      setTimeout(() => {
+        this.getSubject();
+      }, 1000);
+      this.disableBtn = false;
     },
     addQuestion() {
       this.subject.questions.push({

@@ -20,6 +20,12 @@ const routes = [
     component: SubjectView,
     props: (route) => ({ id: route.params.id }),
   },
+  {
+    path: "/pupil/:id",
+    name: "pupil",
+    component: () => import("../views/PupilView.vue"),
+    props: (route) => ({ id: route.params.id }),
+  }
 ];
 
 const router = createRouter({
