@@ -73,7 +73,14 @@ export default createStore({
         console.log(error);
       }
     },
-    
+    async fetchUsers({ commit }) {
+      try {
+        const resp = await api.get("/users");
+        commit("setPupils", resp.data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
   modules: {},
 });

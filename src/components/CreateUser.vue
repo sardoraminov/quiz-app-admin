@@ -61,17 +61,19 @@
 
 <script>
 import { api } from "@/plugins/api";
+import { useStore } from "vuex";
 import { useToast } from "vue-toastification";
 import { useRouter } from "vue-router";
 import { reactive } from "vue";
 
 export default {
   name: "CreateUser",
-  props: ["show", "closeModal", "getPupils"],
+  props: ["show", "closeModal"],
   setup(props) {
+    const store = useStore();
     const toast = useToast();
     const router = useRouter();
-    const user = reactive({
+    let user = reactive({
       fullname: "",
       classNum: "",
       oneId: "",
@@ -86,6 +88,18 @@ export default {
       user.oneId = oneId;
     };
 
+    const getPupils = async () => {
+      try {
+        await api.get(`/users`).then((res) => {
+          res.data.map((pupil) => {
+            pupilsArr.push(pupil);
+          });
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     const createUser = async () => {
       if (user.fullname.length < 5) {
         toast.warning(
@@ -97,21 +111,29 @@ export default {
       } else if (!user.oneId) {
         toast.warning("O'quvchi uchun ID yarating!", { timeout: 4000 });
       } else {
-        try {
-          const resp = await api.post("/users/create", {
+        api
+          .post("/users/create", {
             fullname: user.fullname,
             oneId: user.oneId,
             classNum: user.classNum,
+          })
+          .then((resp) => {
+            const data = resp.data;
+            console.log(data);
+            toast.success(`${user.fullname} tizimdan ro'yxatdan o'tdi!`, {
+              timeout: 4000,
+            });
+          })
+          .finally(() => {
+            user = reactive({
+              fullname: "",
+              classNum: "",
+              oneId: "",
+            });
+            store.dispatch("fetchUsers").then(() => {
+              console.log("fetchUsers called!");
+            });
           });
-          const data = await resp.data;
-
-          console.log(data);
-          toast.success(`${user.fullname} tizimdan ro'yxatdan o'tdi!`, {
-            timeout: 4000,
-          });
-        } catch (error) {
-          console.log(error);
-        }
       }
     };
 

@@ -26,7 +26,7 @@
       <div
         v-for="(subject, index) in filteredSubjects"
         :key="index"
-        class="subject border rounded p-5 flex flex-col items-start"
+        class="subject border rounded p-5 flex flex-col items-start relative"
       >
         <h1 class="name text-2xl font-bold">{{ subject.name }}</h1>
         <p class="class text-lg opacity-80">{{ subject.classNum }} - sinf</p>
@@ -36,7 +36,7 @@
             subject.active ? 'bg-blue' : 'bg-red',
           ]"
         >
-          {{ subject.active ? "Faol" : "O'chirilgan" }}
+          {{ subject.active ? "Faol" : "Faol emas" }}
         </p>
         <router-link
           :to="{
@@ -47,8 +47,23 @@
           >Savolarni ko'rish (<b>{{ subject.questions.length }}</b
           >)</router-link
         >
+        <button
+          :disabled="disableBtn"
+          @click="deleteSubject(subject._id)"
+          type="button"
+          class="delete-all border bg-red text-white p-2 rounded transition-all ease-linear duration-75 hover:-translate-y-1 hover:shadow -lg disabled:bg-gray absolute top-3 right-3"
+        >
+          <img :src="DeleteIco" alt="delete" />
+        </button>
       </div>
     </div>
+    <button
+      @click="deleteAll()"
+      v-if="!loading && filteredSubjects.length !== 0"
+      class="delete-btn bg-red my-4 text-white font-semibold rounded px-3 py-2 mt-6 transition-all ease-linear duration-75 hover:-translate-y-1 hover:shadow-lg"
+    >
+      Hammasini o'chirish
+    </button>
   </div>
 </template>
 
@@ -56,9 +71,11 @@
 import EditIco from "@/assets/edit.svg";
 import DeleteIco from "@/assets/delete.svg";
 import PlusIco from "@/assets/plus.svg";
+import { api } from "@/plugins/api";
 import { computed, onBeforeMount, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { reactive } from "vue";
+import { useToast } from "vue-toastification";
 
 export default {
   name: "Subject",
@@ -70,7 +87,11 @@ export default {
     };
   },
   setup() {
+    const toast = useToast();
+
     let loading = ref(false);
+
+    let disableBtn = ref(false);
 
     const store = useStore();
 
@@ -93,6 +114,20 @@ export default {
       { immediate: true }
     );
 
+    const deleteSubject = async (id) => {
+      disableBtn.value = true;
+      loading.value = true;
+      await api.delete(`/subjects/delete/${id}`).then((resp) => {
+        store.dispatch("fetchSubjects").then(() => {
+          loading.value = false;
+        });
+        console.log(resp.data);
+        toast.success(resp.data.msg, { timeout: 5000 });
+        disableBtn.value = false;
+        loading.value = false;
+      });
+    };
+
     const filteredSubjects = computed(() => {
       if (!searchTerm.value) {
         return subjects;
@@ -110,6 +145,22 @@ export default {
       }
     });
 
+    const deleteAll = async () => {
+      try {
+        loading.value = true;
+        disableBtn.value = true;
+
+        api.delete(`/subjects`).then((resp) => {
+          console.log(resp);
+          store.dispatch("fetchSubjects").then(() => {
+            loading.value = false;
+          });
+        });
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
     watch(
       () => store.state.subjects,
       () => {
@@ -120,7 +171,15 @@ export default {
       }
     );
 
-    return { subjects, loading, searchTerm, filteredSubjects };
+    return {
+      subjects,
+      loading,
+      searchTerm,
+      filteredSubjects,
+      disableBtn,
+      deleteSubject,
+      deleteAll,
+    };
   },
 };
 </script>

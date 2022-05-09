@@ -1,10 +1,6 @@
 <template>
   <div class="pupils">
-    <CreateUser
-      :getPupils="getPupils"
-      :closeModal="closeModal"
-      :show="showModal"
-    />
+    <CreateUser :closeModal="closeModal" :show="showModal" />
     <button
       @click="openModal"
       class="openmodal-btn flex flex-row items-center w-full mb-3 transition-all ease-linear duration-75 hover:-translate-y-1 hover:shadow-lg bg-blue text-white rounded font-semibold px-3 py-2"
@@ -64,8 +60,9 @@
           </p>
         </div>
         <button
+          :disabled="disableBtn"
           @click="deletePupil(pupil._id)"
-          class="user-delete-btn bg-red p-2 rounded absolute right-3 top-3"
+          class="user-delete-btn bg-red p-2 rounded absolute right-3 top-3 disabled:bg-gray"
         >
           <img :src="DeleteIco" alt="delete-icon" />
         </button>
@@ -87,14 +84,16 @@ import DeleteIco from "@/assets/delete.svg";
 import CopyIco from "@/assets/copy.svg";
 import { api } from "@/plugins/api";
 import { useToast } from "vue-toastification";
-import { computed, onBeforeMount, reactive, ref } from "vue";
+import { computed, onBeforeMount, reactive, ref, watch } from "vue";
+import { useStore } from "vuex";
 export default {
   components: { CreateUser },
   name: "Pupils",
   props: {
     pupils: Array,
   },
-  setup(props) {
+  setup() {
+    const store = useStore();
     const toast = useToast();
     let showModal = ref(false);
     let loading = ref(false);
@@ -103,7 +102,25 @@ export default {
 
     let searchTerm = ref("");
 
-    let pupilsArr = reactive([]);
+    let pupilsArr = reactive(store.state.pupils);
+
+    const getPupils = async () => {
+      try {
+        loading.value = true;
+        store.dispatch("fetchUsers").then(() => {
+          console.log(pupilsArr);
+          console.log(filteredList.value);
+          loading.value = false;
+        });
+      } catch (error) {
+        console.log(error
+        );
+      }
+    };
+
+    onBeforeMount(() => {
+      getPupils()
+    });
 
     let filteredList = computed(() => {
       return pupilsArr.filter((pupil) => {
@@ -117,21 +134,6 @@ export default {
       });
     });
 
-    const getPupils = async () => {
-      try {
-        loading.value = true;
-        const resp = await api.get("/users");
-        const data = await resp.data;
-        data.map((pupil) => {
-          pupilsArr.push(pupil);
-        });
-        loading.value = false;
-      } catch (error) {
-        loading.value = false;
-        console.log(error);
-      }
-    };
-
     const deletePupil = async (id) => {
       try {
         disableBtn.value = true;
@@ -139,13 +141,27 @@ export default {
         const data = await resp.data;
 
         console.log(data);
-
+        l;
         toast.success(`O'quvchi tizimdan o'chirildi!`, { timeout: 4000 });
 
-        getPupils();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
         disableBtn.value = false;
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     };
+
+    watch(
+      () => store.state.pupils,
+      () => {
+        pupilsArr.splice(0, pupilsArr.length);
+        store.state.pupils.forEach((pupil) => {
+          pupilsArr.push(pupil);
+        });
+      }
+    )
 
     const closeModal = () => {
       showModal.value = false;
@@ -154,11 +170,6 @@ export default {
     const openModal = () => {
       showModal.value = true;
     };
-
-    onBeforeMount(() => {
-      getPupils();
-      console.log(filteredList.value);
-    });
 
     return {
       deletePupil,
@@ -170,7 +181,6 @@ export default {
       loading,
       disableBtn,
       searchTerm,
-      getPupils,
     };
   },
   data() {

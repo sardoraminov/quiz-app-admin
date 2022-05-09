@@ -9,21 +9,15 @@
       >
         <ion-icon name="chevron-back-outline" class="m-1"></ion-icon>
       </button>
-      <button
-      v-if="!error"
-        :disabled="disableBtn"
-        @click="deleteSubject(subject._id)"
-        type="button"
-        class="delete-all border bg-red text-white px-5 py-3 rounded transition-all ease-linear duration-75 hover:-translate-y-1 hover:shadow -lg disabled:bg-gray"
-      >
-        <img :src="DeleteIco" alt="delete" />
-      </button>
     </nav>
     <div v-if="loading === true" class="loading text-center mt-4 text-2xl">
       Loading...
     </div>
-    <div v-else-if="error" class="text-center">Ma'lumot topilmadi :( <br>
-      <router-link to="/" class="text-xl text-blue mt-2">Bosh sahifa</router-link>
+    <div v-else-if="error" class="text-center">
+      Ma'lumot topilmadi :( <br />
+      <router-link to="/" class="text-xl text-blue mt-2"
+        >Bosh sahifa</router-link
+      >
     </div>
     <div v-else class="subject-container">
       <h1 class="subject-name text-3xl font-bold text-blue">
