@@ -10,7 +10,7 @@ const routes = [
     component: HomeView,
   },
   {
-    path: "/create",
+    path: "/create/subject",
     name: "create",
     component: CreateSubjectView,
   },
@@ -25,7 +25,12 @@ const routes = [
     name: "pupil",
     component: () => import("../views/PupilView.vue"),
     props: (route) => ({ id: route.params.id }),
-  }
+  },
+  {
+    path: "/create/exam",
+    name: "exam",
+    component: () => import("../views/CreateExamView.vue"),
+  },
 ];
 
 const router = createRouter({

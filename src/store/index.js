@@ -81,6 +81,14 @@ export default createStore({
         console.log(error);
       }
     },
+    async fetchExams({ commit }) {
+      try {
+        const resp = await api.get('/exams')
+        commit('setExams', resp.data)
+      } catch (error) {
+        console.log(error);
+      }
+    }
   },
   modules: {},
 });

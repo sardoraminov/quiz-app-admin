@@ -10,11 +10,17 @@
       >
     </div>
     <div v-else class="user-container">
-      <div class="flex flex-col items-start mb-8">
+      <div class="flex flex-row items-center mb-8">
+        <button
+          @click="goBack()"
+          class="go-back transition-all flex items-center justify-center text-white text-2xl ease-linear duration-75 hover:-translate-y-1 mr-5 hover:shadow-lg font-bold bg-blue rounded px-3 py-2"
+        >
+          <ion-icon name="chevron-back-outline" class="m-1"></ion-icon>
+        </button>
+        <div class="pupil-info flex flex-col">
         <h1 class="title text-2xl font-bold opacity-80 text-blue">
           O'quvchi ma'lumotlari
         </h1>
-        <div class="pupil-info mt-2">
           <p class="info font-bold opacity-50">
             (
             {{
@@ -121,7 +127,7 @@ export default {
 
         this.toast.success("O'quvchi ma'lumotlari muvaffaqiyatli yangilandi", {
           timeout: 5000,
-          icon: true
+          icon: true,
         });
 
         this.disableBtn = false;

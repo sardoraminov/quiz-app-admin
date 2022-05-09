@@ -64,13 +64,13 @@ export default {
     Pupils,
     Exams,
   },
-  data() {  
+  data() {
     return {
       PlusIco,
     };
   },
   setup() {
-    const current = ref("pupils");
+    const current = ref("exams");
 
     const changeStatus = (stat) => {
       current.value = stat;
