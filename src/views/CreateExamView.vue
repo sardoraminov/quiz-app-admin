@@ -91,11 +91,10 @@ export default {
 
     const examId = computed(() => {
       let oneId =
-        Math.random().toString(12).substring(2, 8) + exam.name
-          ? exam.name.substring(0, 3)
-          : "" + exam.classNum
-          ? exam.classNum.substring(0, 3)
-          : "";
+        Math.random().toString(12).substring(2, 8) +
+        exam.name.substring(0, 3) +
+        exam.classNum.substring(0, 3);
+
       return oneId;
     });
 
@@ -160,6 +159,7 @@ export default {
               name: exam.name,
               classNum: exam.classNum,
               timeOut: timeOutMilliseconds,
+              timeOutOriginal: exam.timeOut,
               oneId: examId.value,
             })
             .then((resp) => {

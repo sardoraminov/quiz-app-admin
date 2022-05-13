@@ -31,7 +31,7 @@ export default {
 
     const loading = store.getters["getLoading"];
 
-    return {loading}
+    return { loading };
   },
 };
 </script>

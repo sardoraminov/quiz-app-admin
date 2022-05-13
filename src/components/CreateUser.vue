@@ -87,19 +87,7 @@ export default {
 
       user.oneId = oneId;
     };
-
-    const getPupils = async () => {
-      try {
-        await api.get(`/users`).then((res) => {
-          res.data.map((pupil) => {
-            pupilsArr.push(pupil);
-          });
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
+    
     const createUser = async () => {
       if (user.fullname.length < 5) {
         toast.warning(

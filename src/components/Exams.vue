@@ -17,20 +17,50 @@
     <div v-if="loading" class="loading text-center mt-4 text-2xl">
       Loading...
     </div>
-
-    
     <div
       class="no-subject text-center text-xl mt-4"
       v-else-if="filteredList.length === 0"
     >
       Imtihonlar mavjud emas :(
     </div>
+    <div v-else class="exams-container grid grid-cols-auto gap-4">
+      <div
+        v-for="(exam, index) in filteredList"
+        :key="index"
+        class="exam border rounded p-4 relative"
+      >
+        <button
+          :disabled="disableBtn"
+          class="user-delete-btn bg-red p-2 rounded absolute right-3 top-3 disabled:bg-gray"
+        >
+          <img :src="DeleteIco" alt="delete-icon" />
+        </button>
+        <div class="titles">
+          <h1 class="exam-name text-xl font-bold">
+            {{ exam.name }} {{ exam.classNum }}
+          </h1>
+          <p class="exam-oneId text-sm">{{ exam.oneId }}</p>
+        </div>
+        <div class="exam-countdown mt-4">
+          <div v-if="exam.timeOut === 0">
+            <p class="text-red font-medium">Imtihon tugadi</p>
+            <router-link to="#!" class="text-blue underline"
+              >Natijalar</router-link
+            >
+          </div>
+          <div v-else>
+            <p class="countdown">Tugaydi: {{ convertMsToTime(exam.timeOut) }}</p>
+            <button class="close-exam btn bg-blue">Tugatish</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { convertMsToTime } from "../utils/convertMsToTime";
 import { useStore } from "vuex";
-import { useToast } from "vue-toastification";
 import { computed, onBeforeMount, reactive, ref, watch } from "vue";
 import DeleteIco from "@/assets/delete.svg";
 import PlusIco from "@/assets/plus.svg";
@@ -46,6 +76,16 @@ export default {
 
     let exams = reactive(store.state.exams);
 
+    let filteredList = computed(() => {
+      return exams.filter((exam) => {
+        return (
+          exam.name.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
+          exam.oneId.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
+          exam.classNum.toLowerCase().includes(searchTerm.value.toLowerCase())
+        );
+      });
+    });
+
     const getExams = async () => {
       loading.value = true;
       store.dispatch("fetchExams").then(() => {
@@ -53,8 +93,21 @@ export default {
       });
     };
 
+    const calculateTime = async () => {
+      setInterval(() => {
+        filteredList.value.forEach((exam) => {
+          if (exam.timeOut === 0 || exam.timeOut < 0) {
+            exam.finished = true;
+          } else {
+            exam.timeOut -= 1000;
+          }
+        });
+      }, 1000);
+    };
+
     onBeforeMount(() => {
-      getExams()
+      getExams();
+      calculateTime();
     });
 
     watch(
@@ -67,17 +120,15 @@ export default {
       }
     );
 
-    let filteredList = computed(() => {
-      return exams.filter((exam) => {
-        return (
-          exam.name.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
-          exam.oneId.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
-          exam.classNum.toLowerCase().includes(searchTerm.value.toLowerCase())
-        );
-      });
-    });
-
-    return { disableBtn, DeleteIco, PlusIco, searchTerm, loading, filteredList };
+    return {
+      disableBtn,
+      DeleteIco,
+      PlusIco,
+      searchTerm,
+      loading,
+      filteredList,
+      convertMsToTime,
+    };
   },
 };
 </script>
