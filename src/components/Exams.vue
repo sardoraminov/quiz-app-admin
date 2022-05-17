@@ -53,6 +53,12 @@
               >Natijalar</router-link
             >
           </div>
+          <div v-else-if="exam.finished">
+            <p class="text-red font-bold">Imtihon tugadi</p>
+            <router-link to="#!" class="text-blue underline"
+              >Natijalar</router-link
+            >
+          </div>
           <div v-else>
             <p class="countdown font-bold">
               Tugaydi: {{ convertMsToTime(exam.timeOut) }}

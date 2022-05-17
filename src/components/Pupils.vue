@@ -46,17 +46,24 @@
         </div>
         <div class="user-info mt-5">
           <p>{{ pupil.classNum }} - sinf</p>
-          <router-link
-            to="#!"
-            v-if="pupil.active"
-            class="bg-blue-10 text-blue font-bold uppercase rounded px-1"
-            >{{ pupil.exam }} imtihonida</router-link
-          >
           <p
-            class="bg-gray-10 text-gray-400 uppercase px-1 font-bold rounded"
-            v-else
+            v-if="pupil.status === 'inExam'"
+            class="bg-blue-10 text-blue font-bold uppercase rounded px-1"
+            >{{ pupil.exam }} imtihonida</p
           >
-            Imtihonda emas
+          <div v-else-if="pupil.status === 'finished'">
+            <p
+              class="bg-gray-10 text-gray-400 uppercase px-1 font-bold rounded"
+            >
+              IMTIHONNI TUGATDI
+            </p>
+            <router-link to="#!">Natijalarni korish</router-link>
+          </div>
+          <p
+            v-else
+            class="bg-gray-10 text-gray-400 uppercase px-1 font-bold rounded"
+          >
+            IMTIHONDA EMAS
           </p>
         </div>
         <button
@@ -113,13 +120,12 @@ export default {
           loading.value = false;
         });
       } catch (error) {
-        console.log(error
-        );
+        console.log(error);
       }
     };
 
     onBeforeMount(() => {
-      getPupils()
+      getPupils();
     });
 
     let filteredList = computed(() => {
@@ -141,7 +147,7 @@ export default {
         const data = await resp.data;
 
         console.log(data);
-        l;
+        ;
         toast.success(`O'quvchi tizimdan o'chirildi!`, { timeout: 4000 });
 
         setTimeout(() => {
@@ -161,7 +167,7 @@ export default {
           pupilsArr.push(pupil);
         });
       }
-    )
+    );
 
     const closeModal = () => {
       showModal.value = false;

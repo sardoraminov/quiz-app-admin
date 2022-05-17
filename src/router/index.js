@@ -31,6 +31,12 @@ const routes = [
     name: "exam",
     component: () => import("../views/CreateExamView.vue"),
   },
+  {
+    path: "/result/:id",
+    name: "result",
+    component: () => import("../views/ResultView.vue"),
+    props: (route) => ({ id: route.params.id }),
+  },
 ];
 
 const router = createRouter({
