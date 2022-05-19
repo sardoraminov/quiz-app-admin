@@ -122,7 +122,7 @@ export default {
       try {
         this.loading = true;
         this.disableBtn = true;
-        const resp = await api.put(`/users/${this.id}`, { user: this.pupil });
+        const resp = await api.put(`/users/${this.pupil._id}`, { user: this.pupil });
         const data = await resp.data;
 
         this.toast.success("O'quvchi ma'lumotlari muvaffaqiyatli yangilandi", {
@@ -136,6 +136,9 @@ export default {
         console.log(error);
       }
     },
+    goBack() {
+      this.$router.go(-1)
+    }
   },
   mounted() {
     this.getUser();

@@ -34,7 +34,7 @@
           </div>
           <div class="profile-names">
             <router-link
-              :to="{ name: 'pupil', params: { id: pupil._id } }"
+              :to="{ name: 'pupil', params: { id: pupil.oneId } }"
               class="fullname text-xl font-bold text-blue hover:underline"
             >
               {{ pupil.fullname }}
