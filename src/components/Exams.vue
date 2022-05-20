@@ -23,7 +23,7 @@
     >
       Imtihonlar mavjud emas :(
     </div>
-    <div v-else class="exams-container grid grid-cols-auto gap-4">
+    <div v-else class="exams-container grid grid-cols-auto gap-4 mb-6">
       <div
         v-for="(exam, index) in filteredList"
         :key="index"
@@ -49,13 +49,17 @@
           </p>
           <div v-if="exam.timeOut === 0">
             <p class="text-red font-bold">Imtihon tugadi</p>
-            <router-link to="#!" class="text-blue underline"
+            <router-link
+              :to="{ name: 'examResults', params: { id: exam.oneId } }"
+              class="text-blue underline"
               >Natijalar</router-link
             >
           </div>
           <div v-else-if="exam.finished">
             <p class="text-red font-bold">Imtihon tugadi</p>
-            <router-link to="#!" class="text-blue underline"
+            <router-link
+              :to="{ name: 'examResults', params: { id: exam.oneId } }"
+              class="text-blue underline"
               >Natijalar</router-link
             >
           </div>
@@ -74,6 +78,11 @@
         </div>
       </div>
     </div>
+    <router-link
+      to="/results"
+      class="bg-blue text-white rounded px-3 py-2 transition-all hover:shadow-lg"
+      >Imtihon natijalari</router-link
+    >
   </div>
 </template>
 

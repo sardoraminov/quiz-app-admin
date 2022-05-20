@@ -18,9 +18,9 @@
           <ion-icon name="chevron-back-outline" class="m-1"></ion-icon>
         </button>
         <div class="pupil-info flex flex-col">
-        <h1 class="title text-2xl font-bold opacity-80 text-blue">
-          O'quvchi ma'lumotlari
-        </h1>
+          <h1 class="title text-2xl font-bold opacity-80 text-blue">
+            O'quvchi ma'lumotlari
+          </h1>
           <p class="info font-bold opacity-50">
             (
             {{
@@ -64,6 +64,13 @@
           </button>
         </div>
       </div>
+      <div v-if="pupil.lastExam" class="last-exam-results mt-4">
+        <h1 class="title text-xl font-bold">Oxirgi imtihon natijalari:</h1>
+        <div class="results">
+          <p>{{ pupil.lastExam }}</p>
+          <p>{{ pupil.rating }}</p>
+        </div>
+      </div>
     </div>
     <button
       @click="updatePupil()"
@@ -78,9 +85,7 @@
 </template>
 
 <script>
-import { onBeforeMount, reactive, ref } from "vue";
 import { useToast } from "vue-toastification";
-import { useRouter } from "vue-router";
 import { api } from "@/plugins/api";
 export default {
   props: ["id"],
@@ -122,7 +127,9 @@ export default {
       try {
         this.loading = true;
         this.disableBtn = true;
-        const resp = await api.put(`/users/${this.pupil._id}`, { user: this.pupil });
+        const resp = await api.put(`/users/${this.pupil._id}`, {
+          user: this.pupil,
+        });
         const data = await resp.data;
 
         this.toast.success("O'quvchi ma'lumotlari muvaffaqiyatli yangilandi", {
@@ -137,8 +144,8 @@ export default {
       }
     },
     goBack() {
-      this.$router.go(-1)
-    }
+      this.$router.go(-1);
+    },
   },
   mounted() {
     this.getUser();

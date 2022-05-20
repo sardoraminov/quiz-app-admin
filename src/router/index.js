@@ -32,11 +32,16 @@ const routes = [
     component: () => import("../views/CreateExamView.vue"),
   },
   {
-    path: "/result/:id",
-    name: "result",
-    component: () => import("../views/ResultView.vue"),
+    path: "/results/:id",
+    name: "examResults",
+    component: () => import("../views/ExamResults.vue"),
     props: (route) => ({ id: route.params.id }),
   },
+  {
+    path: '/results',
+    name: 'results',
+    component: () => import('../views/ResultsView.vue'),
+  }
 ];
 
 const router = createRouter({
