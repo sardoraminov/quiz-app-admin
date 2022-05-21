@@ -40,7 +40,7 @@
             Imtihon: <b class="normal-case">{{ result.examId }}</b>
           </p>
         </div>
-        <div class="pupil flex flex-row items-center mb-4">
+        <div class="pupil flex flex-row items-center">
           <p class="uppercase opacity-70">O'quvchi:</p>
           &nbsp;
           <router-link
@@ -48,6 +48,10 @@
             :to="{ name: 'pupil', params: { id: result.userId } }"
             >{{ result.userId }}</router-link
           >
+        </div>
+        <div class="exam-date my-4 opacity-70 flex flex-row items-center">
+          <ion-icon name="time-outline"></ion-icon>
+          <p class="date ml-2">{{ date(result.createdAt) }}</p>
         </div>
         <div class="rating">
           <p class="uppercase text-sm opacity-70">Natija</p>
@@ -57,7 +61,7 @@
     </div>
     <div v-if="filteredResults.length > 1">
       <button
-      @click="deleteAll()"
+        @click="deleteAll()"
         :disabled="loading"
         class="result-delete-btn bg-red px-3 py-2 rounded disabled:bg-gray text-white"
       >
@@ -89,6 +93,14 @@ export default {
     this.getResults();
   },
   methods: {
+    date(date) {
+      let d = new Date(date);
+      let formattedDate = `${d.getDate()}/${
+        d.getMonth() + 1
+      }/${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}`;
+      return formattedDate;
+    },
+
     getResults() {
       api.get("/results").then((response) => {
         this.loading = true;

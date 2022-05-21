@@ -78,11 +78,13 @@
         </div>
       </div>
     </div>
-    <router-link
-      to="/results"
-      class="bg-blue text-white rounded px-3 py-2 transition-all hover:shadow-lg"
-      >Imtihon natijalari</router-link
-    >
+    <div class="mt-6">
+      <router-link
+        to="/results"
+        class="bg-blue text-white rounded px-3 py-2 transition-all hover:shadow-lg"
+        >Imtihon natijalari</router-link
+      >
+    </div>
   </div>
 </template>
 
