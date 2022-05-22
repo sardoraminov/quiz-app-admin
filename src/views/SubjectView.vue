@@ -152,7 +152,6 @@ export default {
     async getSubject() {
       this.loading = true;
       const resp = await api.get(`/subjects/get/${this.id}`);
-      console.log(resp.data);
       if (resp.data.status === "error") {
         this.error = true;
         this.loading = false;
@@ -181,7 +180,6 @@ export default {
 
       const resp = await api.delete(`/subjects/delete/${id}`);
       const data = await resp.data;
-      console.log(data);
       this.toast.success(data.msg, { timeout: 4000 });
       this.$router.push("/");
       this.disableBtn = false;
@@ -191,8 +189,6 @@ export default {
       const resp = await api.put(`/subjects/updateAll/${id}`, {
         subject: this.subject,
       });
-
-      console.log(this.subject);
       const data = await resp.data;
       this.toast.success(data.msg, { timeout: 4000 });
       setTimeout(() => {

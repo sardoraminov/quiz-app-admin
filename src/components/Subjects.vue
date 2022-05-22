@@ -121,7 +121,6 @@ export default {
         store.dispatch("fetchSubjects").then(() => {
           loading.value = false;
         });
-        console.log(resp.data);
         toast.success(resp.data.msg, { timeout: 5000 });
         disableBtn.value = false;
         loading.value = false;
@@ -151,7 +150,6 @@ export default {
         disableBtn.value = true;
 
         api.delete(`/subjects`).then((resp) => {
-          console.log(resp);
           store.dispatch("fetchSubjects").then(() => {
             loading.value = false;
           });

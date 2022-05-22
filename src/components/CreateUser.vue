@@ -107,7 +107,6 @@ export default {
           })
           .then((resp) => {
             const data = resp.data;
-            console.log(data);
             toast.success(`${user.fullname} tizimdan ro'yxatdan o'tdi!`, {
               timeout: 4000,
             });
@@ -118,9 +117,7 @@ export default {
               classNum: "",
               oneId: "",
             });
-            store.dispatch("fetchUsers").then(() => {
-              console.log("fetchUsers called!");
-            });
+            store.dispatch("fetchUsers")
           });
       }
     };

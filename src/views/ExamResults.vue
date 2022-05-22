@@ -26,7 +26,7 @@
       <div
         v-for="(result, index) in filteredResults"
         :key="index"
-        class="result relative border rounded p-3"
+        class="result relative border rounded p-4"
       >
         <button
           :disabled="loading"
@@ -35,22 +35,16 @@
         >
           <img :src="DeleteIco" alt="delete-icon" />
         </button>
-        <div class="exam mb-2">
-          <p class="uppercase opacity-70">
-            Imtihon: <b class="normal-case">{{ result.examId }}</b>
-          </p>
+        <div
+          class="exam-date mt-1 mb-3 opacity-50 flex flex-row items-center text-xs font-bold"
+        >
+          <ion-icon name="time-outline"></ion-icon>
+          <p class="date ml-2">{{ date(result.createdAt) }}</p>
         </div>
-        <div class="pupil flex flex-row items-center mb-4">
-          <p class="uppercase opacity-70">O'quvchi:</p>
-          &nbsp;
-          <router-link
-            class="font-bold opacity-70 underline"
-            :to="{ name: 'pupil', params: { id: result.userId } }"
-            >{{ result.userId }}</router-link
-          >
-        </div>
+        <h1 class="exam-name text-xl font-bold text-blue">{{ result.exam }}</h1>
+        <p class="pupil mb-4">{{ result.pupil }}</p>
         <div class="rating">
-          <p class="uppercase text-sm opacity-70">Natija</p>
+          <p class="uppercase text-sm">Natija</p>
           <p class="text-xl font-bold text-blue">{{ result.rating }}</p>
         </div>
       </div>
@@ -87,6 +81,13 @@ export default {
     };
   },
   methods: {
+    date(date) {
+      let d = new Date(date);
+      let formattedDate = `${d.getDate()}/${
+        d.getMonth() + 1
+      }/${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}`;
+      return formattedDate;
+    },
     getResults(id) {
       this.loading = true;
       api.get(`/results/${id}`).then((res) => {
@@ -117,9 +118,12 @@ export default {
   computed: {
     filteredResults() {
       return this.results.filter((result) => {
-        return result.userId
-          .toLowerCase()
-          .includes(this.searchTerm.toLowerCase());
+        return (
+          result.pupilId
+            .toLowerCase()
+            .includes(this.searchTerm.toLowerCase()) ||
+          result.pupil.toLowerCase().includes(this.searchTerm.toLowerCase())
+        );
       });
     },
   },

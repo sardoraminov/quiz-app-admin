@@ -124,7 +124,6 @@ export default {
             all.classes = res.data.subject_classes;
             all.names = res.data.subject_names;
           }
-          console.log(res.data);
           loading.value = false;
         });
       } catch (error) {
@@ -167,7 +166,6 @@ export default {
                 disableBtn.value = false;
                 toast.warning(resp.data.msg, { timeout: 5000, icon: true });
               } else {
-                console.log(resp.data);
                 toast.success(resp.data.msg, { timeout: 4000, icon: true });
                 router.push("/");
                 disableBtn.value = false;

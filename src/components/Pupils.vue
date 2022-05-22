@@ -115,8 +115,6 @@ export default {
       try {
         loading.value = true;
         store.dispatch("fetchUsers").then(() => {
-          console.log(pupilsArr);
-          console.log(filteredList.value);
           loading.value = false;
         });
       } catch (error) {
@@ -145,9 +143,6 @@ export default {
         disableBtn.value = true;
         const resp = await api.delete(`/users/${id}`);
         const data = await resp.data;
-
-        console.log(data);
-        ;
         toast.success(`O'quvchi tizimdan o'chirildi!`, { timeout: 4000 });
 
         setTimeout(() => {

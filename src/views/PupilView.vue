@@ -55,14 +55,26 @@
             v-model="pupil.oneId"
             class="border outline-none w-full rounded p-3 px-3 py-2 focus:border-blue transition-all"
           />
-          <button
-            @click="generateID()"
-            class="generate-id bg-blue text-white rounded px-2 py-1 mt-2"
-            type="button"
-          >
-            ID yaratish
-          </button>
         </div>
+      </div>
+      <div class="btns mt-4 space-x-4">
+        <button
+          :disabled="disableBtn"
+          @click="generateID()"
+          class="generate-id bg-blue text-white rounded px-3 py-2 font-semibold disabled:bg-gray"
+          type="button"
+        >
+          ID yaratish
+        </button>
+        <button
+          @click="updatePupil()"
+          :disabled="disableBtn"
+          v-if="!loading && !error"
+          class="update-pupil bg-blue rounded px-3 py-2 text-white font-semibold disabled:bg-gray"
+          type="button"
+        >
+          Saqlash
+        </button>
       </div>
       <div v-if="pupil.lastExam" class="last-exam-results mt-4">
         <h1 class="title text-xl font-bold">Oxirgi imtihon natijalari:</h1>
@@ -72,15 +84,6 @@
         </div>
       </div>
     </div>
-    <button
-      @click="updatePupil()"
-      :disabled="disableBtn"
-      v-if="!loading && !error"
-      class="update-pupil bg-blue rounded px-3 py-2 text-white font-semibold mt-4 disabled:bg-gray"
-      type="button"
-    >
-      Saqlash
-    </button>
   </div>
 </template>
 

@@ -26,7 +26,7 @@
       <div
         v-for="(result, index) in filteredResults"
         :key="index"
-        class="result relative border rounded p-3"
+        class="result relative border rounded p-4"
       >
         <button
           :disabled="loading"
@@ -35,26 +35,21 @@
         >
           <img :src="DeleteIco" alt="delete-icon" />
         </button>
-        <div class="exam mb-2">
-          <p class="uppercase opacity-70">
-            Imtihon: <b class="normal-case">{{ result.examId }}</b>
-          </p>
-        </div>
-        <div class="pupil flex flex-row items-center">
-          <p class="uppercase opacity-70">O'quvchi:</p>
-          &nbsp;
-          <router-link
-            class="font-bold opacity-70 underline"
-            :to="{ name: 'pupil', params: { id: result.userId } }"
-            >{{ result.userId }}</router-link
-          >
-        </div>
-        <div class="exam-date my-4 opacity-70 flex flex-row items-center">
+        <div
+          class="exam-date mt-1 mb-3 opacity-50 flex flex-row items-center text-xs font-bold"
+        >
           <ion-icon name="time-outline"></ion-icon>
           <p class="date ml-2">{{ date(result.createdAt) }}</p>
         </div>
-        <div class="rating">
-          <p class="uppercase text-sm opacity-70">Natija</p>
+        <h1 class="exam-name text-xl font-bold text-blue">
+          {{ result.exam }}
+        </h1>
+
+        <b class="text-xs text-dark opacity-70 font-medium"
+          >({{ result.examId }})</b
+        >
+        <div class="rating mt-4">
+          <p class=""><b>{{result.pupil}}</b> ning natijasi</p>
           <p class="text-xl font-bold text-blue">{{ result.rating }}</p>
         </div>
       </div>
@@ -133,7 +128,11 @@ export default {
       return this.results.filter((result) => {
         return (
           result.examId.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-          result.userId.toLowerCase().includes(this.searchTerm.toLowerCase())
+          result.pupilId
+            .toLowerCase()
+            .includes(this.searchTerm.toLowerCase()) ||
+          result.exam.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+          result.pupil.toLowerCase().includes(this.searchTerm.toLowerCase())
         );
       });
     },

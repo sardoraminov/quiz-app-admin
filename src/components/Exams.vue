@@ -47,19 +47,19 @@
           <p class="count-of-pupils mt-3 flex flex-row items-center">
             <img :src="UserIco" alt="user" /> {{ exam.pupils }}
           </p>
-          <div v-if="exam.timeOut === 0">
-            <p class="text-red font-bold">Imtihon tugadi</p>
+          <div v-if="exam.timeOut === 0" class="flex flex-row items-center mt-3">
+            <p class="mr-2">Imtihon tugadi!</p>
             <router-link
               :to="{ name: 'examResults', params: { id: exam.oneId } }"
-              class="text-blue underline"
+              class="text-blue underline font-bold"
               >Natijalar</router-link
             >
           </div>
-          <div v-else-if="exam.finished">
-            <p class="text-red font-bold">Imtihon tugadi</p>
+          <div v-else-if="exam.finished" class="flex flex-row items-center mt-3">
+            <p class="mr-2 ">Imtihon tugadi!</p>
             <router-link
               :to="{ name: 'examResults', params: { id: exam.oneId } }"
-              class="text-blue underline"
+              class="text-blue underline font-bold"
               >Natijalar</router-link
             >
           </div>
@@ -142,7 +142,6 @@ export default {
     const deleteExam = async (id, name, classNum) => {
       disableBtn.value = true;
       const { data } = await api.delete(`/exams/${id}/${name}/${classNum}`);
-      console.log(data);
 
       toast.success(data.msg, { timeout: 4000, icon: true });
 
@@ -154,7 +153,6 @@ export default {
       disableBtn.value = true;
 
       const { data } = await api.put(`/exams/finish/${id}`);
-      console.log(data);
       toast.success(data.msg, { timeout: 4000, icon: true });
       disableBtn.value = false;
 
