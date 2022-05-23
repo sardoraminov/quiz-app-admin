@@ -38,10 +38,10 @@ const routes = [
     props: (route) => ({ id: route.params.id }),
   },
   {
-    path: '/results',
-    name: 'results',
-    component: () => import('../views/ResultsView.vue'),
-  }
+    path: "/results",
+    name: "results",
+    component: () => import("../views/ResultsView.vue"),
+  },
 ];
 
 const router = createRouter({

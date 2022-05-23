@@ -81,8 +81,9 @@ import { api } from "@/plugins/api";
 import { useToast } from "vue-toastification";
 export default {
   setup() {
+    document.title = `Imtihon ochish`;
+
     const toast = useToast();
-    const store = useStore();
     const router = useRouter();
 
     let loading = ref(false);

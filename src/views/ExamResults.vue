@@ -41,11 +41,25 @@
           <ion-icon name="time-outline"></ion-icon>
           <p class="date ml-2">{{ date(result.createdAt) }}</p>
         </div>
-        <h1 class="exam-name text-xl font-bold text-blue">{{ result.exam }}</h1>
-        <p class="pupil mb-4">{{ result.pupil }}</p>
+        <router-link
+          :to="{ name: 'pupil', params: { id: result.pupilId } }"
+          class="pupil text-xl font-bold text-blue"
+          >{{ result.pupil }}</router-link
+        >
+        <p class="exam-name mb-4">{{ result.exam }}</p>
         <div class="rating">
-          <p class="uppercase text-sm">Natija</p>
-          <p class="text-xl font-bold text-blue">{{ result.rating }}</p>
+          <p
+            :class="[
+              'font-bold text-xl',
+              grade === 5
+                ? 'text-green'
+                : grade === 4
+                ? 'text-yellow'
+                : 'text-red',
+            ]"
+          >
+            {{ result.percent }}% - {{ result.grade }}
+          </p>
         </div>
       </div>
     </div>
@@ -129,6 +143,7 @@ export default {
   },
   created() {
     this.getResults(this.id);
+    document.title = `Imtihon natijalari: ${this.id}`;
   },
 };
 </script>

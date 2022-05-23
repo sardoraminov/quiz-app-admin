@@ -44,10 +44,13 @@
         </div>
 
         <div class="exam-info mt-4">
-          <p class="count-of-pupils mt-3 flex flex-row items-center">
+          <p v-if="exam.finished === false" class="count-of-pupils mt-3 flex flex-row items-center">
             <img :src="UserIco" alt="user" /> {{ exam.pupils }}
-          </p>
-          <div v-if="exam.timeOut === 0" class="flex flex-row items-center mt-3">
+          </p>  
+          <div
+            v-if="exam.timeOut === 0"
+            class="flex flex-row items-center mt-3"
+          >
             <p class="mr-2">Imtihon tugadi!</p>
             <router-link
               :to="{ name: 'examResults', params: { id: exam.oneId } }"
@@ -55,8 +58,11 @@
               >Natijalar</router-link
             >
           </div>
-          <div v-else-if="exam.finished" class="flex flex-row items-center mt-3">
-            <p class="mr-2 ">Imtihon tugadi!</p>
+          <div
+            v-else-if="exam.finished"
+            class="flex flex-row items-center mt-3"
+          >
+            <p class="mr-2">Imtihon tugadi!</p>
             <router-link
               :to="{ name: 'examResults', params: { id: exam.oneId } }"
               class="text-blue underline font-bold"
@@ -155,6 +161,7 @@ export default {
       const { data } = await api.put(`/exams/finish/${id}`);
       toast.success(data.msg, { timeout: 4000, icon: true });
       disableBtn.value = false;
+
 
       getExams();
     };

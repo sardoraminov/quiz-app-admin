@@ -152,6 +152,7 @@ export default {
   },
   mounted() {
     this.getUser();
+    document.title = `O'quvchi - ${this.pupil.fullname}`;
   },
 };
 </script>

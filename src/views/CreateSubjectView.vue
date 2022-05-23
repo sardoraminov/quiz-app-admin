@@ -144,6 +144,7 @@ import ArrowIco from "@/assets/arrow.svg";
 export default {
   name: "CreateSubject",
   setup() {
+    document.title = `Test yaratish`;
     const store = useStore();
     const router = useRouter();
     const toast = useToast();

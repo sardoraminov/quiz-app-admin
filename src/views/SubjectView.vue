@@ -129,6 +129,7 @@ export default {
   name: "Subject",
   props: ["id"],
   setup(props) {
+    document.title = `Test: ${props.id}`;
     const toast = useToast();
 
     return { toast };

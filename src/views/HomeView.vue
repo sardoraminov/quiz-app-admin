@@ -71,6 +71,7 @@ export default {
   },
   setup() {
     const current = ref("exams");
+    document.title = `Bosh sahifa | @livecoders`;
 
     const changeStatus = (stat) => {
       current.value = stat;

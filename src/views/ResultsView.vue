@@ -49,8 +49,12 @@
           >({{ result.examId }})</b
         >
         <div class="rating mt-4">
-          <p class=""><b>{{result.pupil}}</b> ning natijasi</p>
-          <p class="text-xl font-bold text-blue">{{ result.rating }}</p>
+          <p class="">
+            <b>{{ result.pupil }}</b> ning natijasi
+          </p>
+          <p class="text-xl font-bold text-blue">
+            {{ result.percent }}% - {{ result.grade }}
+          </p>
         </div>
       </div>
     </div>
@@ -85,6 +89,7 @@ export default {
     };
   },
   created() {
+    document.title = `Imtihon natijalari`
     this.getResults();
   },
   methods: {
