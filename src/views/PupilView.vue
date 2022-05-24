@@ -77,10 +77,10 @@
         </button>
       </div>
       <div v-if="pupil.lastExam" class="last-exam-results mt-4">
-        <h1 class="title text-xl font-bold">Oxirgi imtihon natijalari:</h1>
-        <div class="results">
-          <p>{{ pupil.lastExam }}</p>
-          <p>{{ pupil.rating }}</p>
+        <h1 class="title">Oxirgi imtihon natijalari:</h1>
+        <div class="results mt-3">
+          <p class="text-2xl">{{ pupil.lastExam }}</p>
+          <p class="text-xl font-bold">{{ pupil.rating }}</p>
         </div>
       </div>
     </div>

@@ -75,12 +75,6 @@
         </button>
       </div>
     </div>
-    <button
-      v-if="filteredList.length > 0"
-      class="delete-btn bg-red my-4 text-white font-semibold rounded px-3 py-2 mt-6 transition-all ease-linear duration-75 hover:-translate-y-1 hover:shadow-lg"
-    >
-      Hammasini o'chirish
-    </button>
   </div>
 </template>
 

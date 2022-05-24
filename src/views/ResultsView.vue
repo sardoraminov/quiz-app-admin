@@ -52,7 +52,16 @@
           <p class="">
             <b>{{ result.pupil }}</b> ning natijasi
           </p>
-          <p class="text-xl font-bold text-blue">
+          <p
+            :class="[
+              'font-bold text-xl',
+              grade === 5
+                ? 'text-green'
+                : grade === 4
+                ? 'text-yellow'
+                : 'text-red',
+            ]"
+          >
             {{ result.percent }}% - {{ result.grade }}
           </p>
         </div>
@@ -89,7 +98,7 @@ export default {
     };
   },
   created() {
-    document.title = `Imtihon natijalari`
+    document.title = `Imtihon natijalari`;
     this.getResults();
   },
   methods: {
