@@ -7,7 +7,7 @@
         <img :src="UserIco" alt="icon" class="mr-2" />
         Admin
       </h1>
-      <p class="text-[#535353]">livecoders <b>TM</b></p>
+      <p class="text-[#535353]">dasturchioka <b>TM</b></p>
     </nav>
     <Loading v-show="loading" />
     <router-view />

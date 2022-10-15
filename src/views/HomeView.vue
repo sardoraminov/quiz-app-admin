@@ -9,9 +9,9 @@
         <button
           @click="changeStatus('subjects')"
           :class="[
-            'flex font-semibold py-5 xs:px-0 px-4 subjects-btn transition-all',
+            'flex font-semibold py-5 xs:px-0 px-4 border-b-4 border-transparent subjects-btn transition-all',
             current === 'subjects'
-              ? 'active border-b-4 border-b-blue text-blue'
+              ? 'active border-b-blue text-blue'
               : 'text-[#BDBDBD]  border-b-2 xs:border-b-transparent border-b-[#F6F6F6]',
           ]"
         >
@@ -20,9 +20,9 @@
         <button
           @click="changeStatus('pupils')"
           :class="[
-            'flex font-semibold py-5 xs:ml-9 xs:px-0 px-4 pupils-btn transition-all',
+            'flex font-semibold py-5 xs:ml-9 border-b-4 border-transparent xs:px-0 px-4 pupils-btn transition-all',
             current === 'pupils'
-              ? 'active border-b-4 border-b-blue text-blue'
+              ? 'active border-b-blue text-blue'
               : 'text-[#BDBDBD] border-b-2 xs:border-b-transparent border-b-[#F6F6F6]',
           ]"
         >
@@ -31,9 +31,9 @@
         <button
           @click="changeStatus('exams')"
           :class="[
-            'flex font-semibold py-5 xs:ml-9 xs:px-0 px-4 pupils-btn transition-all',
+            'flex font-semibold py-5 border-b-4 border-transparent xs:ml-9 xs:px-0 px-4 pupils-btn transition-all',
             current === 'exams'
-              ? 'active border-b-4 border-blue text-blue'
+              ? 'active  border-b-blue text-blue'
               : 'text-[#BDBDBD]',
           ]"
         >
