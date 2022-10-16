@@ -21,3 +21,14 @@
 .v-leave-to {
   opacity: 0;
 }
+
+@media print {
+  .navbar {
+    display: none;
+  }
+}
+
+@page {
+  size: auto;   /* auto is the initial value */
+  margin: 0; 
+}

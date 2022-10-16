@@ -42,11 +42,18 @@ const routes = [
     name: "results",
     component: () => import("../views/ResultsView.vue"),
   },
+
+  // prints here
+  {
+    path: '/print/results',
+    name: "printAllResults",
+    component: () => import('../views/prints/AllResultsView.vue')
+  }
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes,
+  routes, 
 });
 
 export default router;

@@ -8,6 +8,7 @@
         <ion-icon name="chevron-back-outline" class="m-1"></ion-icon>
       </button>
     </div>
+    <h1 class="text-2xl font-bold mt-4">{{results[0].exam}} natijalari</h1>
     <input
       type="text"
       v-model="searchTerm"
@@ -48,17 +49,13 @@
         >
         <p class="exam-name mb-4">{{ result.exam }}</p>
         <div class="rating">
-          <p
-            :class="[
-              'font-bold text-xl',
-              grade === 5
-                ? 'text-green'
-                : grade === 4
-                ? 'text-yellow'
-                : 'text-red',
-            ]"
-          >
-            {{ result.percent }}% - {{ result.grade }}
+          <p>
+            Jami savollar:
+            <b>{{ result.rating.substring(result.rating.indexOf("/") + 1) }}</b>
+          </p>
+          <p>
+            To'g'ri javoblar:
+            <b>{{ result.rating.substring(0, result.rating.indexOf("/")) }}</b>
           </p>
         </div>
       </div>
