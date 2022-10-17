@@ -44,9 +44,12 @@
         </div>
 
         <div class="exam-info mt-4">
-          <p v-if="exam.finished === false" class="count-of-pupils mt-3 flex flex-row items-center">
+          <p
+            v-if="exam.finished === false"
+            class="count-of-pupils mt-3 flex flex-row items-center"
+          >
             <img :src="UserIco" alt="user" /> {{ exam.pupils }}
-          </p>  
+          </p>
           <div
             v-if="exam.timeOut === 0"
             class="flex flex-row items-center mt-3"
@@ -84,11 +87,16 @@
         </div>
       </div>
     </div>
-    <div class="mt-6">
+    <div class="mt-6 flex flex-wrap gap-y-4 flex-row items-center">
       <router-link
         to="/results"
-        class="bg-blue text-white rounded px-3 py-2 transition-all hover:shadow-lg"
+        class="bg-blue mr-3 text-white rounded px-3 py-2 transition-all hover:shadow-lg"
         >Imtihon natijalari</router-link
+      >
+      <router-link
+        to="/print/results"
+        class="bg-blue text-white rounded px-3 py-2 transition-all hover:shadow-lg"
+        >Natijalarni chop etish</router-link
       >
     </div>
   </div>
@@ -161,7 +169,6 @@ export default {
       const { data } = await api.put(`/exams/finish/${id}`);
       toast.success(data.msg, { timeout: 4000, icon: true });
       disableBtn.value = false;
-
 
       getExams();
     };
