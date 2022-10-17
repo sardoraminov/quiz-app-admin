@@ -8,7 +8,7 @@
         <ion-icon name="chevron-back-outline" class="m-1"></ion-icon>
       </button>
     </div>
-    <h1 class="text-2xl font-bold mt-4">{{results[0].exam}} natijalari</h1>
+    <h1 class="text-2xl font-bold mt-4">{{ results[0].exam }} natijalari</h1>
     <input
       type="text"
       v-model="searchTerm"
@@ -60,13 +60,21 @@
         </div>
       </div>
     </div>
-    <div v-if="filteredResults.length > 1">
+    <div class="mt-4 flex flex-row flex-wrap gap-y-4">
       <button
+        v-if="filteredResults.length > 1"
         @click="deleteAll()"
         :disabled="loading"
         class="result-delete-btn bg-red px-3 py-2 rounded disabled:bg-gray text-white"
       >
         Tozalash
+      </button>
+      <button
+        @click="$router.push(`/print/results/${$props.id}`)"
+        :disabled="loading"
+        class="text-white bg-sky-300 rounded px-3 py-2 transition-all hover:shadow-lg"
+      >
+        Chop etish
       </button>
     </div>
   </div>

@@ -1,7 +1,8 @@
 <script setup>
-import { computed, onMounted, reactive, ref } from "vue";
+import Vue, { ref } from "vue";
 import { api } from "@/plugins/api";
 import { useToast } from "vue-toastification";
+import XLSX from 'xlsx';
 
 const toast = useToast();
 
@@ -25,6 +26,15 @@ const getResults = async () => {
   }
 };
 
+const dateFormatter = (date) => {
+  let d = new Date(date);
+  let formattedDate = `${d.getDate()}/${
+    d.getMonth() + 1
+  }/${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}`;
+  return formattedDate;
+};
+
+
 getResults().then(() => {
   //   window.print()
 });
@@ -43,11 +53,12 @@ getResults().then(() => {
         Imtihon natijalari
       </caption>
       <tr class="font-extrabold bg-gray-50">
-        <th scope="col">Tartib</th>
+        <th id="order" scope="col">Tartib</th>
         <th scope="col">Ism familiya</th>
         <th scope="col">Imtihon</th>
         <th scope="col">Savollar</th>
         <th scope="col">Natija</th>
+        <th scope="col">Sana</th>
       </tr>
       <tbody>
         <tr v-for="(result, index) in results" :key="index">
@@ -56,11 +67,13 @@ getResults().then(() => {
           <td>{{ result.exam }}</td>
           <td>{{ result.rating.substring(result.rating.indexOf("/") + 1) }}</td>
           <td>{{ result.rating.substring(0, result.rating.indexOf("/")) }}</td>
+          <td>{{ dateFormatter(result.createdAt) }}</td>
         </tr>
       </tbody>
       <p class="text-sky-600 underline mt-5">
         <a href="https://dasturchioka.uz">dasturchioka.uz</a>
       </p>
+
     </table>
   </div>
 </template>
@@ -76,7 +89,13 @@ td,
 th {
   border: 1px solid #dddddd;
   text-align: left;
-  padding: 8px;
+  padding: 4px;
+  font-size: 14px;
+}
+
+#order {
+  width: 1px;
+  white-space: nowrap;
 }
 
 @media print {
