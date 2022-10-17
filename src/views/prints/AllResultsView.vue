@@ -80,8 +80,8 @@ th {
 }
 
 @media print {
-    .go-back {
-        display: none;
-    }
+  .go-back {
+    display: none;
+  }
 }
 </style>
