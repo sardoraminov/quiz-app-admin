@@ -99,7 +99,7 @@
 
 <script>
 import { convertMsToTime } from "../utils/convertMsToTime";
-import { api } from "@/plugins/api";
+import { api } from "@/http/api";
 import { useStore } from "vuex";
 import { useToast } from "vue-toastification";
 import { computed, onBeforeMount, reactive, ref, watch } from "vue";

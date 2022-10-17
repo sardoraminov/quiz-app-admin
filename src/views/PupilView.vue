@@ -89,7 +89,7 @@
 
 <script>
 import { useToast } from "vue-toastification";
-import { api } from "@/plugins/api";
+import { api } from "@/http/api";
 export default {
   props: ["id"],
   setup(props) {

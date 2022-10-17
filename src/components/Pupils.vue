@@ -49,8 +49,9 @@
           <p
             v-if="pupil.status === 'inExam'"
             class="bg-blue-10 text-blue font-bold uppercase rounded px-1"
-            >{{ pupil.exam }} imtihonida</p
           >
+            {{ pupil.exam }} imtihonida
+          </p>
           <div v-else-if="pupil.status === 'finished'">
             <p
               class="bg-gray-10 text-gray-400 uppercase px-1 font-bold rounded"
@@ -75,6 +76,13 @@
         </button>
       </div>
     </div>
+    <button
+      v-if="!loading"
+      :disabled="loading"
+      class="text-white mt-4 bg-[#1D6F42] rounded px-3 py-2 transition-all hover:shadow-lg"
+    >
+      Excel
+    </button>
   </div>
 </template>
 
@@ -83,7 +91,7 @@ import CreateUser from "./CreateUser.vue";
 import PlusIco from "@/assets/plus.svg";
 import DeleteIco from "@/assets/delete.svg";
 import CopyIco from "@/assets/copy.svg";
-import { api } from "@/plugins/api";
+import { api } from "@/http/api";
 import { useToast } from "vue-toastification";
 import { computed, onBeforeMount, reactive, ref, watch } from "vue";
 import { useStore } from "vuex";
@@ -110,6 +118,7 @@ export default {
         loading.value = true;
         store.dispatch("fetchUsers").then(() => {
           loading.value = false;
+          
         });
       } catch (error) {
         console.log(error);

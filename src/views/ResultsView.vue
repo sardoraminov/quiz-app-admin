@@ -86,7 +86,7 @@
 
 <script>
 import DeleteIco from "@/assets/delete.svg";
-import { api } from "@/plugins/api";
+import { api } from "@/http/api";
 import { useToast } from "vue-toastification";
 export default {
   name: "Results",

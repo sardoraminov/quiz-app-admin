@@ -77,7 +77,7 @@
 import { computed, onBeforeMount, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import { api } from "@/plugins/api";
+import { api } from "@/http/api";
 import { useToast } from "vue-toastification";
 export default {
   setup() {

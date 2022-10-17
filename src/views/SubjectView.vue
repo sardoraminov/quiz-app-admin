@@ -115,13 +115,20 @@
           SAQLASH
         </button>
       </form>
+      <button
+      v-if="!loading"
+      :disabled="loading"
+      class="text-white mt-4 bg-[#1D6F42] rounded px-3 py-2 transition-all hover:shadow-lg"
+    >
+      Excel
+    </button>
     </div>
   </div>
 </template>
 
 <script>
 import { useToast } from "vue-toastification";
-import { api } from "@/plugins/api";
+import { api } from "@/http/api";
 import PlusIco from "@/assets/plus.svg";
 import DeleteIco from "@/assets/delete.svg";
 import EditIco from "@/assets/edit.svg";

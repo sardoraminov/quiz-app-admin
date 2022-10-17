@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { api } from "@/plugins/api";
+import { api } from "@/http/api";
 import { useStore } from "vuex";
 import { useToast } from "vue-toastification";
 import { useRouter } from "vue-router";

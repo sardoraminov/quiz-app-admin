@@ -71,7 +71,7 @@
 import EditIco from "@/assets/edit.svg";
 import DeleteIco from "@/assets/delete.svg";
 import PlusIco from "@/assets/plus.svg";
-import { api } from "@/plugins/api";
+import { api } from "@/http/api";
 import { computed, onBeforeMount, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { reactive } from "vue";
