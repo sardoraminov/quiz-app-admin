@@ -42,19 +42,6 @@ const routes = [
     name: "results",
     component: () => import("../views/ResultsView.vue"),
   },
-
-  // prints here
-  {
-    path: '/print/results',
-    name: "printAllResults",
-    component: () => import('../views/prints/AllResultsView.vue')
-  },
-  {
-    path: '/print/results/:id',
-    name: "printExamResults",
-    component: () => import('../views/prints/ExamResultsView.vue'),
-    props: (route) => ({ id: route.params.id }),
-  },
 ];
 
 const router = createRouter({

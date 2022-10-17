@@ -93,11 +93,6 @@
         class="bg-blue mr-3 text-white rounded px-3 py-2 transition-all hover:shadow-lg"
         >Imtihon natijalari</router-link
       >
-      <router-link
-        to="/print/results"
-        class="bg-blue text-white rounded px-3 py-2 transition-all hover:shadow-lg"
-        >Chop etish</router-link
-      >
     </div>
   </div>
 </template>

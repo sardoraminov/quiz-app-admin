@@ -65,13 +65,20 @@
         </div>
       </div>
     </div>
-    <div v-if="filteredResults.length > 1">
+    <div>
       <button
+        v-if="filteredResults.length > 1"
         @click="deleteAll()"
         :disabled="loading"
         class="result-delete-btn bg-red px-3 py-2 rounded disabled:bg-gray text-white"
       >
         Tozalash
+      </button>
+      <button
+        :disabled="loading"
+        class="text-white bg-[#1D6F42] rounded px-3 py-2 transition-all hover:shadow-lg"
+      >
+        Excel
       </button>
     </div>
   </div>

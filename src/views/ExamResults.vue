@@ -70,11 +70,10 @@
         Tozalash
       </button>
       <button
-        @click="$router.push(`/print/results/${$props.id}`)"
         :disabled="loading"
-        class="text-white bg-sky-300 rounded px-3 py-2 transition-all hover:shadow-lg"
+        class="text-white bg-[#1D6F42] rounded px-3 py-2 transition-all hover:shadow-lg"
       >
-        Chop etish
+        Excel
       </button>
     </div>
   </div>
