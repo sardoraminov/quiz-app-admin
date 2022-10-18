@@ -8,7 +8,7 @@
         <ion-icon name="chevron-back-outline" class="m-1"></ion-icon>
       </button>
     </div>
-    <h1 class="text-2xl font-bold mt-4">{{ results[0].exam }} natijalari</h1>
+    <h1 class="text-2xl font-bold mt-4">{{ results[0]?.exam }} natijalari</h1>
     <input
       type="text"
       v-model="searchTerm"
@@ -110,6 +110,7 @@ export default {
       this.loading = true;
       api.get(`/results/${id}`).then((res) => {
         this.results = res.data;
+        console.log(res.data);
         this.loading = false;
       });
     },

@@ -1,6 +1,14 @@
 import xlsx from "xlsx";
 import path from "path";
 
+const date = (arg) => {
+  let d = new Date(arg);
+  let formattedDate = `${d.getDate()}/${
+    d.getMonth() + 1
+  }/${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}`;
+  return formattedDate;
+};
+
 const exportExcel = async (
   data,
   workSheetColumnNames,
@@ -35,18 +43,49 @@ export const exportStudents = (
       student.fullname,
       student.lastExam,
       student.status,
-      student.createdAt,
+      date(student.createdAt),
     ];
   });
 
   exportExcel(data, workSheetColumnNames, workSheetName, filePath);
 };
 
-export const exportSubjectQuestions = (
-  students,
+export const exportAllResults = (
+  results,
   workSheetColumnNames,
   workSheetName,
   filePath
 ) => {
-    
+  const data = results.map((result) => {
+    return [
+      result.exam,
+      result.examId,
+      result.pupil,
+      result.pupilId,
+      result.rating,
+      date(result.createdAt),
+    ];
+  });
+
+  exportExcel(data, workSheetColumnNames, workSheetName, filePath);
 };
+
+export const exportExamResults = (
+  results,
+  workSheetColumnNames,
+  workSheetName,
+  filePath
+) => {
+  const data = results.map((result) => {
+    return [
+      result.examId,
+      result.pupil,
+      result.pupilId,
+      result.rating,
+      date(result.createdAt),
+    ];
+  });
+
+  exportExcel(data, workSheetColumnNames, workSheetName, filePath);
+};
+
