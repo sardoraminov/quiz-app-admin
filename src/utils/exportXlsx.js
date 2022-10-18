@@ -50,7 +50,7 @@ export const exportStudents = (
   exportExcel(data, workSheetColumnNames, workSheetName, filePath);
 };
 
-export const exportAllResults = (
+export const exportAllResults = async (
   results,
   workSheetColumnNames,
   workSheetName,

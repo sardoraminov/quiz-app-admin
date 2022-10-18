@@ -75,6 +75,7 @@
         Tozalash
       </button>
       <button
+        @click="() => exportResults(results, columnNames, sheetName, filePath)"
         :disabled="loading"
         class="text-white bg-[#1D6F42] rounded px-3 py-2 transition-all hover:shadow-lg"
       >
@@ -89,7 +90,7 @@ import DeleteIco from "@/assets/delete.svg";
 import { api } from "@/http/api";
 import { useToast } from "vue-toastification";
 import { exportAllResults } from "../utils/exportXlsx.js";
-import fs from "fs"
+import fs from "fs-web"
 
 export default {
   name: "Results",
@@ -104,8 +105,15 @@ export default {
       "Sana",
     ];
 
-    const exportResults = data;
-    return { toast };
+    let sheetName = 'Natijalar'
+    let filePath = '../outputs/natijalar.xlsx'
+
+    const exportResults = async (data, columnNames, sheetName, filePath) => {
+      exportAllResults(data, columnNames, sheetName, filePath).then(() => {
+        fs.removeFile(`../outputs/natijalar.xlsx`)
+      })
+    };
+    return { toast, sheetName, filePath, columnNames, exportResults };
   },
   data() {
     return {
