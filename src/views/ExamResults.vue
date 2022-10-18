@@ -110,7 +110,6 @@ export default {
       this.loading = true;
       api.get(`/results/${id}`).then((res) => {
         this.results = res.data;
-        console.log(res.data);
         this.loading = false;
       });
     },

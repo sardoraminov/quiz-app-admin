@@ -88,6 +88,8 @@
 import DeleteIco from "@/assets/delete.svg";
 import { api } from "@/http/api";
 import { useToast } from "vue-toastification";
+import exportXlsx from "@/utils/exportXlsx"
+
 export default {
   name: "Results",
   setup(props) {

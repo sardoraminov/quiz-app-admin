@@ -1,5 +1,5 @@
 import xlsx from "xlsx";
-import path from "path";
+import path from "path-browserify";
 
 const date = (arg) => {
   let d = new Date(arg);
