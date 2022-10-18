@@ -88,12 +88,23 @@
 import DeleteIco from "@/assets/delete.svg";
 import { api } from "@/http/api";
 import { useToast } from "vue-toastification";
-import exportXlsx from "@/utils/exportXlsx"
+import { exportAllResults } from "../utils/exportXlsx.js";
+import fs from "fs"
 
 export default {
   name: "Results",
   setup(props) {
     const toast = useToast();
+    let columnNames = [
+      "Imtihon",
+      "Imtihon ID",
+      "O'quvchi",
+      "O'quvchi ID",
+      "Natija (javoblar/savollar)",
+      "Sana",
+    ];
+
+    const exportResults = data;
     return { toast };
   },
   data() {
