@@ -77,7 +77,6 @@ export default createStore({
       try {
         const resp = await api.get("/users");
         commit("setPupils", resp.data);
-        console.log(resp.data);
       } catch (error) {
         console.log(error);
       }
