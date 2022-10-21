@@ -70,6 +70,7 @@
         Tozalash
       </button>
       <button
+        @click="() => exportResults(results, columnNames, sheetName, filePath)"
         :disabled="loading"
         class="text-white bg-[#1D6F42] rounded px-3 py-2 transition-all hover:shadow-lg"
       >
@@ -83,12 +84,30 @@
 import DeleteIco from "@/assets/delete.svg";
 import { api } from "@/http/api";
 import { useToast } from "vue-toastification";
+import { exportExamResults } from "../utils/exportXlsx";
 export default {
   name: "ExamResults",
   props: ["id"],
   setup(props) {
     const toast = useToast();
-    return { toast };
+
+    let columnNames = [
+      "Imtihon ID",
+      "O'quvchi",
+      "O'quvchi ID",
+      "Natija (javoblar/savollar)",
+      "Sana",
+    ];
+
+    let sheetName = "Natijalar";
+    let filePath = "natijalar.xlsx";
+
+    const exportResults = async (data, columnNames, sheetName, filePath) => {
+      exportExamResults(data, columnNames, sheetName, filePath).then(() => {
+        console.log("wow");
+      });
+    };
+    return { toast, columnNames, sheetName, filePath, exportResults };
   },
   data() {
     return {

@@ -90,7 +90,6 @@ import DeleteIco from "@/assets/delete.svg";
 import { api } from "@/http/api";
 import { useToast } from "vue-toastification";
 import { exportAllResults } from "../utils/exportXlsx.js";
-import fs from "fs-web"
 
 export default {
   name: "Results",
@@ -105,13 +104,13 @@ export default {
       "Sana",
     ];
 
-    let sheetName = 'Natijalar'
-    let filePath = '../outputs/natijalar.xlsx'
+    let sheetName = "Natijalar";
+    let filePath = "natijalar.xlsx";
 
     const exportResults = async (data, columnNames, sheetName, filePath) => {
       exportAllResults(data, columnNames, sheetName, filePath).then(() => {
-        fs.removeFile(`../outputs/natijalar.xlsx`)
-      })
+        console.log("wow");
+      });
     };
     return { toast, sheetName, filePath, columnNames, exportResults };
   },

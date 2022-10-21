@@ -1,4 +1,4 @@
-import xlsx from "xlsx";
+import * as xlsx from "xlsx";
 import path from "path-browserify";
 
 const date = (arg) => {
@@ -20,15 +20,20 @@ const exportExcel = async (
   const workSheetData = [workSheetColumnNames, ...data];
 
   const workSheet = xlsx.utils.aoa_to_sheet(workSheetData);
-  let columnSizes = workSheet["!cols"];
-
-  for (let i = 0; i < data.length; i++) {
-    columnSizes.push({ width: "auto" });
-  }
 
   xlsx.utils.book_append_sheet(workBook, workSheet, workSheetName);
 
-  xlsx.writeFile(workBook, path.resolve(filePath));
+  function fitToColumn(arrayOfArray) {
+    return arrayOfArray[0].map((a, i) => ({
+      wch: Math.max(
+        ...arrayOfArray.map((a2) => (a2[i] ? a2[i].toString().length : 0))
+      ),
+    }));
+  }
+
+  workSheet["!cols"] = fitToColumn(data)
+
+  xlsx.writeFile(workBook, filePath);
 };
 
 export const exportStudents = (
@@ -70,7 +75,7 @@ export const exportAllResults = async (
   exportExcel(data, workSheetColumnNames, workSheetName, filePath);
 };
 
-export const exportExamResults = (
+export const exportExamResults = async (
   results,
   workSheetColumnNames,
   workSheetName,
@@ -88,4 +93,3 @@ export const exportExamResults = (
 
   exportExcel(data, workSheetColumnNames, workSheetName, filePath);
 };
-
