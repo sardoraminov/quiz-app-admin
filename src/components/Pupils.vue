@@ -77,6 +77,7 @@
       </div>
     </div>
     <button
+    @click="exportXlsx"
       v-if="!loading"
       :disabled="loading"
       class="text-white mt-4 bg-[#1D6F42] rounded px-3 py-2 transition-all hover:shadow-lg"
@@ -95,6 +96,7 @@ import { api } from "@/http/api";
 import { useToast } from "vue-toastification";
 import { computed, onBeforeMount, reactive, ref, watch } from "vue";
 import { useStore } from "vuex";
+import {exportStudents} from "../utils/exportXlsx"
 export default {
   components: { CreateUser },
   name: "Pupils",
@@ -124,6 +126,19 @@ export default {
         console.log(error);
       }
     };
+
+    let sheetColumns = [
+      "ID",
+      "Ism Familiya",
+      "Oxirgi Imtihon",
+      "Natijasi",
+      "Holat",
+      "Ro'yxatdan o'tgan sana"
+    ]
+
+    const exportXlsx = () => {
+      exportStudents(pupilsArr, sheetColumns, "Natijalar", "natijalar.xlsx")
+    }
 
     onBeforeMount(() => {
       getPupils();
@@ -185,6 +200,7 @@ export default {
       loading,
       disableBtn,
       searchTerm,
+      exportXlsx
     };
   },
   data() {

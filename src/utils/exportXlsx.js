@@ -47,6 +47,7 @@ export const exportStudents = (
       student.oneId,
       student.fullname,
       student.lastExam,
+      student.rating,
       student.status,
       date(student.createdAt),
     ];
